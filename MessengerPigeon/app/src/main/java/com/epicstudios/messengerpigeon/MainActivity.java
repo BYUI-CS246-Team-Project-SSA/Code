@@ -1,12 +1,14 @@
 package com.epicstudios.messengerpigeon;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     public void getPermissionToReadSMS() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     public void getPermissionToReadContacts() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
