@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MessengerPigeon.iml" filepath="$PROJECT_DIR$/MessengerPigeon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/MessengerPigeon.iml" filepath="$PROJECT_DIR$/.idea/MessengerPigeon.iml" />
+      <module fileurl="file://C:\Users\Shawn\Documents\GitHub\Code\MessengerPigeon\MessengerPigeon.iml" filepath="C:\Users\Shawn\Documents\GitHub\Code\MessengerPigeon\MessengerPigeon.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
