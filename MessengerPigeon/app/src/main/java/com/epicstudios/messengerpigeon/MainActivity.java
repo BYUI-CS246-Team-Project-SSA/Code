@@ -40,14 +40,13 @@ public class MainActivity extends AppCompatActivity {
         return inst;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.startService(new Intent(this, QuickResponseService.class));
+        //this.startService(new Intent(this, QuickResponseService.class));
         messages = (ListView) findViewById(R.id.messages);
-        input = (EditText) findViewById(R.id.input);
+        //input = (EditText) findViewById(R.id.input);
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, smsMessagesList);
         messages.setAdapter(arrayAdapter);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
