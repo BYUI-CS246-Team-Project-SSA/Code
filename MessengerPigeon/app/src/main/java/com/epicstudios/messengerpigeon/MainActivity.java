@@ -2,13 +2,13 @@ package com.epicstudios.messengerpigeon;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.os.Build;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             refreshSmsInbox();
         }
-
     }
 
     @Override
@@ -66,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         active = true;
         inst = this;
-
     }
 
     public void updateInbox(final String smsMessage) {
@@ -142,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-
     }
 
     public void refreshSmsInbox() {
@@ -164,8 +161,6 @@ public class MainActivity extends AppCompatActivity {
             arrayAdapter.add(str);
             //  }
         } while (smsInboxCursor.moveToNext());
-
-
     }
 
     @Override
