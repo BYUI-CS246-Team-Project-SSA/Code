@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "666560665903",
+    "firebase_url": "https://messengerpigeon-9f486.firebaseio.com",
+    "project_id": "messengerpigeon-9f486",
+    "storage_bucket": "messengerpigeon-9f486.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666560665903:android:bc0bd2d760e37ecf",
+        "android_client_info": {
+          "package_name": "com.epicstudios.messengerpigeon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666560665903-ms3gabvkv4nf9rgk5okonq6tvtu7n900.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.epicstudios.messengerpigeon",
+            "certificate_hash": "157ecdefa9f3db0f07047035955366bd9d283c3e"
+          }
+        },
+        {
+          "client_id": "666560665903-02hvuls6ihk3bfc2mh1m08bqemmlclkf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaK9wBlnw4qSKnpJW0t-3q2ORabfHePj4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666560665903-02hvuls6ihk3bfc2mh1m08bqemmlclkf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
