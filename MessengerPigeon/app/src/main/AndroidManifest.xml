@@ -36,9 +36,16 @@
                 <data android:scheme="mmsto" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DisplayConversationActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
+            android:name=".AddConversationActivity"
+            android:parentActivityName=".MainActivity"/>
 
         <receiver
-            android:name=".SmsBroadcastReciever"
+            android:name=".SmsBroadcastReceiver"
             android:exported="true"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter android:priority="999">

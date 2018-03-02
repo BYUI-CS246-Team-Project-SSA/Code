@@ -25,11 +25,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<String> smsMessagesList = new ArrayList<>();
-    ListView messages;
+    ArrayList<String> conversationList = new ArrayList<>();
+    ListView conversations;
     ArrayAdapter arrayAdapter;
-    EditText input;
-    SmsManager smsManager = SmsManager.getDefault();
     private static MainActivity inst;
     public static boolean active = false;
 
@@ -44,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //this.startService(new Intent(this, QuickResponseService.class));
-        messages = (ListView) findViewById(R.id.messages);
-        //input = (EditText) findViewById(R.id.input);
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, smsMessagesList);
-        messages.setAdapter(arrayAdapter);
+        this.startService(new Intent(this, QuickResponseService.class));
+        conversationList.add("Only for now");
+        conversations = (ListView) findViewById(R.id.conversations);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, conversationList);
+        conversations.setAdapter(arrayAdapter);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             getPermissionToReadContacts();
         }
@@ -68,19 +66,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateInbox(final String smsMessage) {
+        //TODO create intent to DisplayConversationActivity
         arrayAdapter.insert(smsMessage, 0);
         arrayAdapter.notifyDataSetChanged();
-    }
-
-    public void onSendClick(View view) {
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
-            getPermissionToReadSMS();
-        } else {
-            smsManager.sendTextMessage("YOUR NUMBER HERE", null, input.getText().toString(), null, null);
-            Toast.makeText(this, "Message sent!", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -146,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         ContentResolver contentResolver = getContentResolver();
         Cursor smsInboxCursor = contentResolver.query(Uri.parse("content://sms/inbox"), null, null, null, null);
 
-
+        //TODO make intent to DisplayConversationActivity
         int indexBody = smsInboxCursor.getColumnIndex("body");
 
         int indexAddress = smsInboxCursor.getColumnIndex("address");
