@@ -1,6 +1,7 @@
 package com.epicstudios.messengerpigeon;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.content.ContentResolver;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -46,6 +48,25 @@ public class MainActivity extends AppCompatActivity {
         conversationList.add("Only for now");
         conversations = (ListView) findViewById(R.id.conversations);
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, conversationList);
+        conversations.setAdapter(arrayAdapter);
+        this.startService(new Intent(this, QuickResponseService.class));
+
+        /********   Buttons   **********/
+
+        Button btnRegister = (Button) findViewById(R.id.register);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent go = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(go);
+            }
+        });
+
+        /*******************************/
+
+        conversations = (ListView) findViewById(R.id.conversations);
+        //input = (EditText) findViewById(R.id.input);
+        //arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, smsMessagesList);
         conversations.setAdapter(arrayAdapter);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             getPermissionToReadContacts();
@@ -159,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static String getContactName(Context context, String phoneNo) {
         ContentResolver cr = context.getContentResolver();
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNo));
+        @SuppressLint({"NewApi", "LocalSuppress"}) Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNo));
         Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
         if (cursor == null) {
             return phoneNo;
