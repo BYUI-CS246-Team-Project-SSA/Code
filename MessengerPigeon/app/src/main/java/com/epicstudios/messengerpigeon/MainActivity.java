@@ -53,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
         /********   Buttons   **********/
 
-        Button btnRegister = (Button) findViewById(R.id.register);
-        btnRegister.setOnClickListener(new View.OnClickListener() {
+        Button btnLogin = (Button) findViewById(R.id.login);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent go = new Intent(MainActivity.this, RegisterActivity.class);
+                Intent go = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(go);
             }
         });
