@@ -1,6 +1,7 @@
 package com.epicstudios.messengerpigeon;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.content.ContentResolver;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -41,6 +43,25 @@ public class MainActivity extends AppCompatActivity {
         conversationList.add("Only for now");
         conversations = (ListView) findViewById(R.id.conversations);
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, conversationList);
+        conversations.setAdapter(arrayAdapter);
+        this.startService(new Intent(this, QuickResponseService.class));
+
+        /********   Buttons   **********/
+
+        Button btnLogin = (Button) findViewById(R.id.login);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent go = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(go);
+            }
+        });
+
+        /*******************************/
+
+        conversations = (ListView) findViewById(R.id.conversations);
+        //input = (EditText) findViewById(R.id.input);
+        //arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, smsMessagesList);
         conversations.setAdapter(arrayAdapter);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             getPermissionToReadContacts();
