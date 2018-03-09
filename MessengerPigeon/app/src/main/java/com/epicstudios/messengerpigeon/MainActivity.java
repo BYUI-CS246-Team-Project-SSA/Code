@@ -3,6 +3,7 @@ package com.epicstudios.messengerpigeon;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -27,19 +28,22 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<String> conversationList = new ArrayList<>();
-    ListView conversations;
-    ArrayAdapter arrayAdapter;
+    private ArrayList<String> conversationList = new ArrayList<>();
+    private ListView conversations;
+    private ArrayAdapter arrayAdapter;
+    private SharedPreferences prefs;
     public static boolean active = false;
 
     private static final int READ_SMS_PERMISSIONS_REQUEST = 1;
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
+    private static final String SHARED_PREF_FILE = "epicstudios.messengerpigeon.PREF_FILE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.startService(new Intent(this, QuickResponseService.class));
+
         conversationList.add("Only for now");
         conversations = (ListView) findViewById(R.id.conversations);
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, conversationList);
