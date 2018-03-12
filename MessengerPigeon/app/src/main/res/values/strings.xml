@@ -2,5 +2,13 @@
     <string name="app_name">MessengerPigeon</string>
     <string name="send">Send</string>
     <string name="add_convo">Add Conversation</string>
+    <string name="login">Login</string>
+    <string name="messages">Enter message here...</string>
+    <string name="signIn">SIGN IN</string>
+    <string name="register">REGISTER</string>
+    <string name="createAccount">Create Account</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
 
 </resources>

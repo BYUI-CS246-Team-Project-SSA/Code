@@ -45,9 +45,12 @@
         android:id="@+id/login"
         android:layout_width="89dp"
         android:layout_height="51dp"
-        android:text="Login"
-        app:layout_constraintBaseline_toBaselineOf="@+id/addConversation"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/login"
+        app:layout_constraintBottom_toTopOf="@+id/conversations"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/addConversation" />
+        app:layout_constraintStart_toEndOf="@+id/addConversation"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
