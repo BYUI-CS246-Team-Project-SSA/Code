@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,12 +29,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Presenter presenter;
     private ArrayList<String> conversationList = new ArrayList<>();
     private ListView conversations;
     private ArrayAdapter arrayAdapter;
     private SharedPreferences prefs;
     public static boolean active = false;
 
+    private static final String TAG = "MainActivity";
     private static final int READ_SMS_PERMISSIONS_REQUEST = 1;
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
     private static final String SHARED_PREF_FILE = "epicstudios.messengerpigeon.PREF_FILE";
@@ -46,9 +49,19 @@ public class MainActivity extends AppCompatActivity {
 
         conversationList.add("Only for now");
         conversations = (ListView) findViewById(R.id.conversations);
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, conversationList);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, presenter.getConversations());
         conversations.setAdapter(arrayAdapter);
         this.startService(new Intent(this, QuickResponseService.class));
+        // TODO Permissions
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            getPermissionToReadContacts();
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+            getPermissionToReadSMS();
+
+        } else {
+            //refreshSmsInbox();
+        }
 
         /********   Buttons   **********/
 
@@ -62,20 +75,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /*******************************/
-
-        conversations = (ListView) findViewById(R.id.conversations);
-        //input = (EditText) findViewById(R.id.input);
-        //arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, smsMessagesList);
-        conversations.setAdapter(arrayAdapter);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            getPermissionToReadContacts();
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
-            getPermissionToReadSMS();
-
-        } else {
-            //refreshSmsInbox();
-        }
     }
 
     @Override
@@ -107,20 +106,25 @@ public class MainActivity extends AppCompatActivity {
         }
         return Name;
     }
-
+    /*
+        called by ListAdapter Buttons to display that conversation.
+     */
     public void displayConversation(View view) {
         Intent intent = new Intent(this, DisplayConversationActivity.class);
         startActivity(intent);
     }
-
+    /*
+        called by Add Conversation button to bring up addConversationActivity
+        TODO make AddConversationActivity a fragment
+    */
     public void addConversation(View view){
         Intent intent = new Intent(this, AddConversationActivity.class);
         startActivity(intent);
     }
 
-
     @TargetApi(Build.VERSION_CODES.M)
     public void getPermissionToReadSMS() {
+        Log.w(TAG, "getting permissions to read sms in API 23+");
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(
@@ -134,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.M)
     public void getPermissionToReadContacts() {
+        Log.w(TAG, "getting permissions to read contacts in API 23+");
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(

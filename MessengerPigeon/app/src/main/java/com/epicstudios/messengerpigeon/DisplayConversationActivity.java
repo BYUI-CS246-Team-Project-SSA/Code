@@ -24,14 +24,13 @@ import java.util.ArrayList;
 public class DisplayConversationActivity extends AppCompatActivity {
 
     private String phonenum = "5053990094";
-    ArrayList<String> smsMessagesList = new ArrayList<>();
-    ListView messages;
-    ArrayAdapter arrayAdapter;
-    EditText input;
-    SmsManager smsManager = SmsManager.getDefault();
+    private ArrayList<String> smsMessagesList = new ArrayList<>();
+    private ListView messages;
+    private ArrayAdapter arrayAdapter;
+    private EditText input;
+    private SmsManager smsManager = SmsManager.getDefault();
     private static DisplayConversationActivity inst;
     public static boolean active = false;
-
     public static DisplayConversationActivity instance() {
         return inst;
     }
@@ -45,10 +44,10 @@ public class DisplayConversationActivity extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, smsMessagesList);
         messages.setAdapter(arrayAdapter);
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            //getPermissionToReadContacts(); This should be in an extendable class
+            //getPermissionToReadContacts(); This should be in a fragment
         }
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
-            //getPermissionToReadSMS(); This should be in an extendable class
+            //getPermissionToReadSMS(); This should be in a fragment
 
         } else {
             refreshSmsInbox();
@@ -68,23 +67,20 @@ public class DisplayConversationActivity extends AppCompatActivity {
     }
 
     public void onSendClick(View view) {
-
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.SEND_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
             //getPermissionToReadSMS(); This should be in a fragment activity
         } else {
             smsManager.sendTextMessage(phonenum, null, input.getText().toString(), null, null);
             Toast.makeText(this, "Message sent!", Toast.LENGTH_SHORT).show();
+            input.setText("");
         }
     }
 
     public void refreshSmsInbox() {
         ContentResolver contentResolver = getContentResolver();
         Cursor smsInboxCursor = contentResolver.query(Uri.parse("content://sms/inbox"), null, null, null, null);
-
-
         int indexBody = smsInboxCursor.getColumnIndex("body");
-
         int indexAddress = smsInboxCursor.getColumnIndex("address");
         if (indexBody < 0 || !smsInboxCursor.moveToFirst()) return;
         arrayAdapter.clear();
