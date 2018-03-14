@@ -95,7 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        Log.w("activity", "failure", task.getException());
+                        Log.w("RegisterActivity", "Failure to create account.", task.getException());
                         Toast.makeText(RegisterActivity.this,
                                         "Error. Try again.",
                                          Toast.LENGTH_LONG).show();
