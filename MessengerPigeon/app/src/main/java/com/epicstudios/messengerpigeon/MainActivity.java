@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,15 +28,17 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private Presenter presenter;
-    private ArrayList<String> conversationList = new ArrayList<>();
+    private LinkedList<Conversation> conversationList = new LinkedList<>();
     private ListView conversations;
     private ArrayAdapter arrayAdapter;
     private SharedPreferences prefs;
     public static boolean active = false;
+    private List<String> persons = new ArrayList<>();
 
     private static final String TAG = "MainActivity";
     private static final int READ_SMS_PERMISSIONS_REQUEST = 1;
@@ -47,9 +50,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.startService(new Intent(this, QuickResponseService.class));
-        presenter = new Presenter(new LinkedList<Conversation>());
-        conversationList.add("Only for now");
+        presenter = new Presenter(conversationList);
+        ////////////////////////// testing //////////////////////////////
+        persons.add("Only for now");
+        presenter.addConversation(persons, "Testing Testing", true);
+        persons.add("Testing a second");
+        presenter.addConversation(persons, "Testing Testing", false);
+        ////////////////////////////////////////////////////////////////
+        conversationList = presenter.getConversations();
         conversations = (ListView) findViewById(R.id.conversations);
+        conversations.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+             @Override
+             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                 displayConversation(view);
+             }
+         });
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, presenter.getConversations());
         conversations.setAdapter(arrayAdapter);
         this.startService(new Intent(this, QuickResponseService.class));
