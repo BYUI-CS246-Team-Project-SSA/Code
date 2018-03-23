@@ -36,7 +36,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
             }
 
             Toast.makeText(context, "Message Received!", Toast.LENGTH_SHORT).show();
-
+            //TODO send message to presenter to deal with it.
             if (DisplayConversationActivity.active) {
                 DisplayConversationActivity inst = DisplayConversationActivity.instance();
                 inst.updateInbox(smsMessageStr);
