@@ -39,6 +39,7 @@
         android:layout_height="51dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:onClick="displaySignIn"
         android:text="@string/login"
         app:layout_constraintBottom_toTopOf="@+id/conversations"
         app:layout_constraintEnd_toEndOf="parent"

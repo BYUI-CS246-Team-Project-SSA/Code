@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.Telephony;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -33,7 +34,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private Presenter presenter;
-    private LinkedList<Conversation> conversationList = new LinkedList<>();
+    private List<Conversation> conversationList = new LinkedList<>();
     private ListView conversations;
     private ArrayAdapter arrayAdapter;
     private SharedPreferences prefs;
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int READ_SMS_PERMISSIONS_REQUEST = 1;
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
-    private static final String SHARED_PREF_FILE = "epicstudios.messengerpigeon.PREF_FILE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,19 +78,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             //refreshSmsInbox();
         }
-
-        /********   Buttons   **********/
-
-        Button btnLogin = (Button) findViewById(R.id.login);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent go = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(go);
-            }
-        });
-
-        /*******************************/
     }
 
     @Override
@@ -105,25 +92,18 @@ public class MainActivity extends AppCompatActivity {
         active = false;
     }
 
-    public static String getContactName(Context context, String phoneNo) {
-        ContentResolver cr = context.getContentResolver();
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNo));
-        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
-        if (cursor == null) {
-            return phoneNo;
-        }
-        String Name = phoneNo;
-        if (cursor.moveToFirst()) {
-            Name = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
-        }
-
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
-        return Name;
+    /**
+     * Called by Login button to go to Login Activity
+     * @param view the button
+     */
+    public void displaySignIn(View view) {
+        Intent go = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(go);
     }
-    /*
-        called by ListAdapter Buttons to display that conversation.
+
+    /**
+     * Called by ListAdapter Buttons to display specific conversation.
+     * @param view the button
      */
     public void displayConversation(View view) {
         Intent intent = new Intent(this, DisplayConversationActivity.class);
@@ -198,4 +178,24 @@ public class MainActivity extends AppCompatActivity {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+    /*
+    private void getAllSmsMessages() {
+        Context context = this;
+        Cursor cursor = context.getContentResolver().query(Telephony.Sms.CONTENT_URI, null, mSelectionClause, mSelectionArgs, null);
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    int threadId = cursor.getInt(cursor.getColumnIndex(Telephony.Sms.THREAD_ID));
+                    String messageId = cursor.getString(cursor.getColumnIndex(Telephony.Sms._ID));
+                    String message = cursor.getString(cursor.getColumnIndex(Telephony.Sms.BODY));
+                    int type = cursor.getInt(cursor.getColumnIndex(Telephony.Sms.TYPE));
+                    long date = cursor.getLong(cursor.getColumnIndex(Telephony.Sms.DATE));
+                    App.getDataBaseManager().saveMessage(new SmsMmsMessage(threadId, messageId,
+                            message, type, date, null, null));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+    }*/
 }

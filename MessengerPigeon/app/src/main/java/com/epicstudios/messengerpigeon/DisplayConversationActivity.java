@@ -20,6 +20,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DisplayConversationActivity extends AppCompatActivity {
 
@@ -29,6 +31,7 @@ public class DisplayConversationActivity extends AppCompatActivity {
     private ArrayAdapter arrayAdapter;
     private EditText input;
     private SmsManager smsManager = SmsManager.getDefault();
+    private Presenter presenter;
     private static DisplayConversationActivity inst;
     public static boolean active = false;
     public static DisplayConversationActivity instance() {
@@ -43,6 +46,7 @@ public class DisplayConversationActivity extends AppCompatActivity {
         input = (EditText) findViewById(R.id.input);
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, smsMessagesList);
         messages.setAdapter(arrayAdapter);
+        presenter = new Presenter(null);
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             //getPermissionToReadContacts(); This should be in a fragment
         }
@@ -71,9 +75,12 @@ public class DisplayConversationActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             //getPermissionToReadSMS(); This should be in a fragment activity
         } else {
-            smsManager.sendTextMessage(phonenum, null, input.getText().toString(), null, null);
+            String message = input.getText().toString();
+            smsManager.sendTextMessage(phonenum, null, message, null, null);
             Toast.makeText(this, "Message sent!", Toast.LENGTH_SHORT).show();
             input.setText("");
+            List<String> persons = new LinkedList<>();
+            presenter.addConversation(persons, message, false);
         }
     }
 
