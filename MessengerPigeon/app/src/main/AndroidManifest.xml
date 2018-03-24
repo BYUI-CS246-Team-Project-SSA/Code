@@ -22,12 +22,18 @@
         android:roundIcon="@mipmap/ic_pigeon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".RegisterActivity" />
+
+        <activity android:name=".MainActivity">
 
             <intent-filter>
 
@@ -53,9 +59,6 @@
         <activity
             android:name=".AddConversationActivity"
             android:parentActivityName=".MainActivity" />
-
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity"></activity>
 
         <receiver
             android:name=".SmsBroadcastReceiver"

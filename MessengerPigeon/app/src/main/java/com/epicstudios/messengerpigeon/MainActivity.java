@@ -19,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,12 +29,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private FirebaseAuth auth;
     private Presenter presenter;
     private List<Conversation> conversationList = new LinkedList<>();
     private ListView conversations;
@@ -49,14 +55,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        auth = FirebaseAuth.getInstance();
+
         this.startService(new Intent(this, QuickResponseService.class));
         presenter = new Presenter(conversationList);
+
         ////////////////////////// testing //////////////////////////////
         persons.add("Only for now");
         presenter.addConversation(persons, "Testing Testing", true);
         persons.add("Testing a second");
         presenter.addConversation(persons, "Testing Testing", false);
         ////////////////////////////////////////////////////////////////
+
         conversationList = presenter.getConversations();
         conversations = (ListView) findViewById(R.id.conversations);
         conversations.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -84,21 +95,46 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         active = true;
+
+        FirebaseUser currentUser = auth.getCurrentUser();
+
+        if (currentUser == null) {
+            LogOutUser();
+        }
+    }
+
+    private void LogOutUser() {
+        Intent mainIntent = new Intent(
+                MainActivity.this, LoginActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        if (item.getItemId() == R.id.logout_button)
+        {
+            auth.signOut();
+            LogOutUser();
+        }
+        return true;
     }
 
     @Override
     public void onStop() {
         super.onStop();
         active = false;
-    }
-
-    /**
-     * Called by Login button to go to Login Activity
-     * @param view the button
-     */
-    public void displaySignIn(View view) {
-        Intent go = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(go);
     }
 
     /**

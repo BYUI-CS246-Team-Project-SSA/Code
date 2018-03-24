@@ -19,33 +19,21 @@
 
     <Button
         android:id="@+id/addConversation"
-        android:layout_width="wrap_content"
+        android:layout_width="156dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="112dp"
         android:layout_marginTop="8dp"
         android:onClick="addConversation"
         android:text="@string/add_convo"
         app:layout_constraintBottom_toTopOf="@+id/conversations"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintEnd_toStartOf="@+id/login"
+        app:layout_constraintHorizontal_bias="0.018"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/login"
-        android:layout_width="89dp"
-        android:layout_height="51dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="displaySignIn"
-        android:text="@string/login"
-        app:layout_constraintBottom_toTopOf="@+id/conversations"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/addConversation"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ListView
         android:id="@+id/conversations"
