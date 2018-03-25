@@ -20,6 +20,7 @@
         android:icon="@mipmap/ic_pigeon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_pigeon"
+        android:fullBackupContent="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -34,12 +35,9 @@
         <activity android:name=".RegisterActivity" />
 
         <activity android:name=".MainActivity">
-
             <intent-filter>
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
             </intent-filter>
         </activity>
 
@@ -56,9 +54,14 @@
                 <data android:scheme="mmsto" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".AddConversationActivity"
             android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity"/>
 
         <receiver
             android:name=".SmsBroadcastReceiver"
@@ -71,6 +74,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <receiver
             android:name=".MMSBroadcastReceiver"
             android:exported="true"

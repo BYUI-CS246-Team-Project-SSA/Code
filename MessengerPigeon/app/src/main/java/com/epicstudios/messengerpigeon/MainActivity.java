@@ -128,6 +128,13 @@ public class MainActivity extends AppCompatActivity {
             auth.signOut();
             LogOutUser();
         }
+
+        if (item.getItemId() == R.id.acc_set_button)
+        {
+            Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(settingsIntent);
+        }
+
         return true;
     }
 
