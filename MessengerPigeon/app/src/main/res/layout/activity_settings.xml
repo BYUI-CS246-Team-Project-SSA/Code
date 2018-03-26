@@ -24,19 +24,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/SettingsProfileImage"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="32dp"
         android:text="Username"
         android:textColor="@android:color/white"
         android:textSize="24sp" />
 
     <TextView
         android:id="@+id/SettingsStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/SettingsName"
+        android:layout_width="360dp"
+        android:layout_height="40dp"
         android:layout_below="@+id/SettingsName"
-        android:layout_marginTop="14dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:text="Profile Status"
+        android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
 
