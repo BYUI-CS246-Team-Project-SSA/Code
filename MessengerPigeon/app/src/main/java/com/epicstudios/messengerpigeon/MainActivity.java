@@ -1,31 +1,21 @@
 package com.epicstudios.messengerpigeon;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.SharedPreferences;
-import android.os.Build;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.ContactsContract;
-import android.provider.Telephony;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -60,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.startService(new Intent(this, QuickResponseService.class));
         presenter = new Presenter(conversationList);
+        conversations = (ListView) findViewById(R.id.conversations);
 
         ////////////////////////// testing //////////////////////////////
         persons.add("Only for now");
@@ -69,14 +60,13 @@ public class MainActivity extends AppCompatActivity {
         ////////////////////////////////////////////////////////////////
 
         conversationList = presenter.getConversations();
-        conversations = (ListView) findViewById(R.id.conversations);
         conversations.setOnItemClickListener(new AdapterView.OnItemClickListener() {
              @Override
              public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                  displayConversation(view);
              }
          });
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, presenter.getConversations());
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, persons);
         conversations.setAdapter(arrayAdapter);
         this.startService(new Intent(this, QuickResponseService.class));
         // TODO Permissions
@@ -149,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view the button
      */
     public void displayConversation(View view) {
+        Conversation conversation;
         Intent intent = new Intent(this, DisplayConversationActivity.class);
         startActivity(intent);
     }
@@ -166,8 +157,7 @@ public class MainActivity extends AppCompatActivity {
         Log.w(TAG, "getting permissions to read sms in API 23+");
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
-            if (shouldShowRequestPermissionRationale(
-                    android.Manifest.permission.READ_SMS)) {
+            if (shouldShowRequestPermissionRationale(android.Manifest.permission.READ_SMS)) {
                 Toast.makeText(this, "Please allow permission!", Toast.LENGTH_SHORT).show();
             }
             requestPermissions(new String[]{android.Manifest.permission.READ_SMS},
@@ -180,8 +170,7 @@ public class MainActivity extends AppCompatActivity {
         Log.w(TAG, "getting permissions to read contacts in API 23+");
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
-            if (shouldShowRequestPermissionRationale(
-                    android.Manifest.permission.READ_CONTACTS)) {
+            if (shouldShowRequestPermissionRationale(android.Manifest.permission.READ_CONTACTS)) {
                 Toast.makeText(this, "Please allow permission!", Toast.LENGTH_SHORT).show();
             }
             requestPermissions(new String[]{android.Manifest.permission.READ_CONTACTS},
@@ -191,10 +180,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
-
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         if (requestCode == READ_SMS_PERMISSIONS_REQUEST) {
             if (grantResults.length == 1 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -211,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == READ_CONTACTS_PERMISSIONS_REQUEST) {
             if (grantResults.length == 1 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                /** parent.getContext() **/
                 Toast.makeText(this, "Read SMS permission granted", Toast.LENGTH_SHORT).show();
                 //refreshSmsInbox();
             } else {

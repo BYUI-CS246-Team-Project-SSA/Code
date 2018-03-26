@@ -1,27 +1,39 @@
 package com.epicstudios.messengerpigeon;
 
-import android.annotation.TargetApi;
-import android.support.annotation.NonNull;
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.provider.Telephony;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.klinker.android.logger.Log;
+import com.klinker.android.logger.OnLogListener;
+import com.klinker.android.send_message.ApnUtils;
+import com.klinker.android.send_message.BroadcastUtils;
+import com.klinker.android.send_message.Message;
+import com.klinker.android.send_message.Transaction;
+import com.klinker.android.send_message.Utils;
+import com.klinker.android.send_message.Settings;
+
+import android.graphics.BitmapFactory;
 
 public class DisplayConversationActivity extends AppCompatActivity {
 
@@ -52,7 +64,6 @@ public class DisplayConversationActivity extends AppCompatActivity {
         }
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
             //getPermissionToReadSMS(); This should be in a fragment
-
         } else {
             refreshSmsInbox();
         }
@@ -75,13 +86,26 @@ public class DisplayConversationActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             //getPermissionToReadSMS(); This should be in a fragment activity
         } else {
-            String message = input.getText().toString();
-            smsManager.sendTextMessage(phonenum, null, message, null, null);
+            String textToSend = input.getText().toString();
+            smsManager.sendTextMessage(phonenum, null, textToSend, null, null);
             Toast.makeText(this, "Message sent!", Toast.LENGTH_SHORT).show();
             input.setText("");
             List<String> persons = new LinkedList<>();
-            presenter.addConversation(persons, message, false);
+            presenter.addConversation(persons, textToSend, false);
         }
+    }
+
+    private void sendMMS(String textToSend){
+        Uri contentUri;
+        String locationUrl;
+        Bundle configOverrides;
+        PendingIntent sentIntent;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //smsManager.sendMultimediaMessage(this, contentUri, locationUrl, configOverrides, sentIntent);
+            }
+        }).start();
     }
 
     public void refreshSmsInbox() {

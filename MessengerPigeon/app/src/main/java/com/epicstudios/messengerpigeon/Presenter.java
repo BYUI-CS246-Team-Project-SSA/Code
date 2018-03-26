@@ -13,10 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-/**
- * Created by Suzy on 3/12/2018.
- */
-
 public class Presenter {
     private static final String TAG = "Presenter";
     private List<Conversation> conversations = new LinkedList<>();
