@@ -76,6 +76,7 @@ public class DisplayConversationActivity extends AppCompatActivity {
         inst = this;
     }
 
+    //TODO remove
     public void updateInbox(final String smsMessage) {
         arrayAdapter.insert(smsMessage, 0);
         arrayAdapter.notifyDataSetChanged();
@@ -108,6 +109,7 @@ public class DisplayConversationActivity extends AppCompatActivity {
         }).start();
     }
 
+    //TODO Remove
     public void refreshSmsInbox() {
         ContentResolver contentResolver = getContentResolver();
         Cursor smsInboxCursor = contentResolver.query(Uri.parse("content://sms/inbox"), null, null, null, null);
