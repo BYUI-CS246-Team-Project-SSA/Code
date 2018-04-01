@@ -5,7 +5,7 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="DisplayConversationActivity">
+    tools:context="DisplayGroupActivity">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -28,7 +28,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/conversations" />
+        app:layout_constraintTop_toBottomOf="@+id/peoples" />
 
     <Button
         android:id="@+id/send"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="@+id/input" />
 
     <ListView
-        android:id="@+id/conversations"
+        android:id="@+id/peoples"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/input"

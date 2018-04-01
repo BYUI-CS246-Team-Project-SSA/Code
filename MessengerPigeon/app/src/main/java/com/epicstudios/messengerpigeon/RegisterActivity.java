@@ -42,6 +42,16 @@ public class RegisterActivity extends AppCompatActivity {
         createAcc = (Button) findViewById(R.id.create_acc_button);
         loadBar = new ProgressDialog(this);
 
+        Bundle data = getIntent().getExtras();
+        String email = data.getString("email");
+        String password = data.getString("password");
+        if(email != null) {
+            userEmail.setText(data.getString("email"));
+        }
+        if(password != null){
+            userPswd.setText(data.getString("password"));
+        }
+
         createAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
