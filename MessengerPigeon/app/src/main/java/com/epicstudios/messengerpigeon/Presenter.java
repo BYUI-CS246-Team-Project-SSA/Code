@@ -3,12 +3,10 @@ package com.epicstudios.messengerpigeon;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.provider.UserDictionary;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -43,8 +41,11 @@ public class Presenter {
     public Presenter(Context cont) {
         Log.i(TAG, "Presenter created.");
         context = cont;
-        groups.add("Test One");
-        groups.add("Test Two");
+        /****************Tests*********************/
+        groups.add("Group One");
+        groups.add("Group Two");
+        /*************************************/
+        retrieveGroups();
     }
 
     public void copyGroups(List<String> groupSet){
@@ -53,7 +54,10 @@ public class Presenter {
 
     public List<String> getGroup(int index){
         List<String> people = new ArrayList<>();
-
+        /*****************Tests********************/
+        people.add("Person 1");
+        people.add("Person 2");
+        /*************************************/
         return people;
     }
 
@@ -76,22 +80,31 @@ public class Presenter {
      */
     public List<String> getGroups(){ return groups; }
 
+    /**
+     * makes list of all the groups saved on your phone(/google) by String name
+     */
     private void retrieveGroups() {
-       /* ContentResolver cr = context.getContentResolver();
-        Uri uri = Uri.withAppendedPath(ContactsContract.Groups);
-        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
-        if (cursor == null) {
-            return phoneNo;
+        ContentResolver cr = context.getContentResolver();
+        Uri uri = ContactsContract.Groups.CONTENT_URI;
+        String[] clms = new String[]{ContactsContract.Groups.TITLE};
+        Cursor cursor = cr.query(uri, clms, null, null, null);
+        if (cursor != null) {
+            if(cursor.getCount() < 1) {
+                groups.add("No Groups");
+            }
+            else{
+                while(cursor.moveToNext()){
+                    groups.add(cursor.getString(0));
+                }
+            }
         }
-        String Name = phoneNo;
-        if (cursor.moveToFirst()) {
-            Name = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+        else {
+            //TODO Something went wrong
         }
 
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
-        return Name;*/
     }
     /**
      * Retrieves the contact associated with a phone number
@@ -100,17 +113,16 @@ public class Presenter {
      * @return Contact Name
      */
     private String getContactName(String phoneNo) {
+        String Name = phoneNo;
         ContentResolver cr = context.getContentResolver();
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNo));
         Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
         if (cursor == null) {
-            return phoneNo;
+            return Name;
         }
-        String Name = phoneNo;
         if (cursor.moveToFirst()) {
             Name = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
         }
-
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
