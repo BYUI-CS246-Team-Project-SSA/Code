@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,24 +22,23 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private Presenter presenter;
-    private List<Conversation> conversationList = new LinkedList<>();
-    private ListView conversations;
-    private ArrayAdapter arrayAdapter;
+    private List<String> groupList;
+    private List<String> peopleList = new ArrayList<>();
+    private ListView groups;
+    private ArrayAdapter groupAdapter;
     private SharedPreferences prefs;
     public static boolean active = false;
-    private List<String> persons = new ArrayList<>();
 
     private static final String TAG = "MainActivity";
-    private static final int READ_SMS_PERMISSIONS_REQUEST = 1;
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
 
     @Override
@@ -48,36 +48,21 @@ public class MainActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        this.startService(new Intent(this, QuickResponseService.class));
-        presenter = new Presenter(conversationList);
-        conversations = (ListView) findViewById(R.id.conversations);
-
-        ////////////////////////// testing //////////////////////////////
-        persons.add("Only for now");
-        presenter.addConversation(persons, "Testing Testing", true);
-        persons.add("Testing a second");
-        presenter.addConversation(persons, "Testing Testing", false);
-        ////////////////////////////////////////////////////////////////
-
-        conversationList = presenter.getConversations();
-        conversations.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        presenter = new Presenter(this);
+        groupList = presenter.getGroups();
+        groupAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, groupList);
+        groups = (ListView) findViewById(R.id.peoples);
+        groups.setAdapter(groupAdapter);
+        groups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
              @Override
              public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                 displayConversation(view);
+                 view.setId(i);
+                 displayGroup(view);
              }
          });
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, persons);
-        conversations.setAdapter(arrayAdapter);
-        this.startService(new Intent(this, QuickResponseService.class));
-        // TODO Permissions
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             getPermissionToReadContacts();
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
-            getPermissionToReadSMS();
-
-        } else {
-            //refreshSmsInbox();
         }
     }
 
@@ -103,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
@@ -124,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
             Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(settingsIntent);
         }
-
         return true;
     }
 
@@ -135,36 +118,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Called by ListAdapter Buttons to display specific conversation.
+     * Called by ListAdapter Buttons to display specific groups.
      * @param view the button
      */
-    public void displayConversation(View view) {
-        Conversation conversation;
-        Intent intent = new Intent(this, DisplayConversationActivity.class);
+    public void displayGroup(View view) {
+        int id = view.getId();
+        Log.i(TAG, groupList.get(id));
+        /////////////////////////////////////////////////////
+       /* peopleList.add("Person 1");
+        peopleList.add("Person 2");
+        ////////////////////////////////////////////////////
+        ArrayAdapter peopleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, peopleList);
+        groups.setAdapter(peopleAdapter);*/
+
+        Intent intent = new Intent(this, DisplayGroupActivity.class);
+        intent.putExtra("Group", groupList.get(id));
+        intent.putExtra("Presenter", new Gson().toJson(presenter));
         startActivity(intent);
     }
-    /*
-        called by Add Conversation button to bring up addConversationActivity
-        TODO make AddConversationActivity a fragment
-    */
+
+    /**
+     *  called by Add Conversation button to bring up addConversationActivity
+     *  @param view the button
+     */
     public void addConversation(View view){
         Intent intent = new Intent(this, AddConversationActivity.class);
         startActivity(intent);
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    public void getPermissionToReadSMS() {
-        Log.w(TAG, "getting permissions to read sms in API 23+");
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (shouldShowRequestPermissionRationale(android.Manifest.permission.READ_SMS)) {
-                Toast.makeText(this, "Please allow permission!", Toast.LENGTH_SHORT).show();
-            }
-            requestPermissions(new String[]{android.Manifest.permission.READ_SMS},
-                    READ_SMS_PERMISSIONS_REQUEST);
-        }
-    }
-
+    /**
+     * called to get permission to read contacts from the phone.
+     * ASync request with onRequestPermissionResult as callback function
+     */
     @TargetApi(Build.VERSION_CODES.M)
     public void getPermissionToReadContacts() {
         Log.w(TAG, "getting permissions to read contacts in API 23+");
@@ -175,57 +160,33 @@ public class MainActivity extends AppCompatActivity {
             }
             requestPermissions(new String[]{android.Manifest.permission.READ_CONTACTS},
                     READ_CONTACTS_PERMISSIONS_REQUEST);
-
         }
     }
 
+    /**
+     * called by the permissions request when done processing
+     * @param requestCode code associated with initial request
+     * @param permissions ???
+     * @param grantResults value indicating the results of the request
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        if (requestCode == READ_SMS_PERMISSIONS_REQUEST) {
-            if (grantResults.length == 1 &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Read SMS permission granted", Toast.LENGTH_SHORT).show();
-                //refreshSmsInbox();
-            } else {
-                Toast.makeText(this, "Read SMS permission denied", Toast.LENGTH_SHORT).show();
-            }
-
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-
         if (requestCode == READ_CONTACTS_PERMISSIONS_REQUEST) {
             if (grantResults.length == 1 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 /** parent.getContext() **/
-                Toast.makeText(this, "Read SMS permission granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Read Contacts permission granted", Toast.LENGTH_SHORT).show();
                 //refreshSmsInbox();
             } else {
-                Toast.makeText(this, "Read SMS permission denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Read Contacts permission denied", Toast.LENGTH_SHORT).show();
             }
-
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-    /*
-    private void getAllSmsMessages() {
-        Context context = this;
-        Cursor cursor = context.getContentResolver().query(Telephony.Sms.CONTENT_URI, null, mSelectionClause, mSelectionArgs, null);
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    int threadId = cursor.getInt(cursor.getColumnIndex(Telephony.Sms.THREAD_ID));
-                    String messageId = cursor.getString(cursor.getColumnIndex(Telephony.Sms._ID));
-                    String message = cursor.getString(cursor.getColumnIndex(Telephony.Sms.BODY));
-                    int type = cursor.getInt(cursor.getColumnIndex(Telephony.Sms.TYPE));
-                    long date = cursor.getLong(cursor.getColumnIndex(Telephony.Sms.DATE));
-                    App.getDataBaseManager().saveMessage(new SmsMmsMessage(threadId, messageId,
-                            message, type, date, null, null));
-                } while (cursor.moveToNext());
-            }
-        } finally {
-            cursor.close();
-        }
-    }*/
+    //TODO check if necessary
+    public void updateList(final String smsMessage) {
+        groupAdapter.insert(smsMessage, 0);
+        groupAdapter.notifyDataSetChanged();
+    }
 }

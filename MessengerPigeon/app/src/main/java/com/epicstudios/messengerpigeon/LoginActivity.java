@@ -53,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent go = new Intent(LoginActivity.this, RegisterActivity.class);
+                go.putExtra("email", logEmail.getText().toString());
+                go.putExtra("password", logPswd.getText().toString());
                 startActivity(go);
             }
         });
