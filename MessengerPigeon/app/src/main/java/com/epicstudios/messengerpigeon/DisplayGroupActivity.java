@@ -36,11 +36,12 @@ public class DisplayGroupActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         List<String> temp = extras.getStringArrayList("Groups");
-        presenter = new Presenter(this);
-        presenter.copyGroups(temp);
+        List<String> tempIDs = extras.getStringArrayList("GroupIDs");
+        presenter = new Presenter(this, temp, tempIDs);
         listofPeople = presenter.getGroup(extras.getInt("index"));
 
         people = (ListView) findViewById(R.id.peoples);
+        //arrayAdapter = new ArrayAdapter<>(this, R.layout.contact_display, *viewID* , listofPeople);
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_multichoice, listofPeople);
         people.setAdapter(arrayAdapter);
 

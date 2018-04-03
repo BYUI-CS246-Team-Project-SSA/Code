@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DisplayGroupActivity.class);
         intent.putExtra("index", id);
         intent.putExtra("Groups", (ArrayList<String>) presenter.getGroups());
+        intent.putExtra("GroupIDs", (ArrayList<String>) presenter.getGroupIDs());
         /*Gson gson = new Gson();
         Log.d(TAG, "gson created");
         String json = gson.toJson(presenter);
