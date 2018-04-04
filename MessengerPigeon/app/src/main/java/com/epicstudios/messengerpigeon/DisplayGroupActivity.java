@@ -17,36 +17,32 @@ import android.widget.EditText;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DisplayGroupActivity extends AppCompatActivity {
 
     private final String TAG = "DisplayGroupActivity";
-    private ArrayList<String> listofPeople = new ArrayList<>();
+    private List<String> listofPeople;
     private ListView people;
     private ArrayAdapter arrayAdapter;
     private Presenter presenter;
-
     //private EditText input;
-
-    /*private static DisplayGroupActivity inst;
-    public static boolean active = false;
-    public static DisplayGroupActivity instance() {
-        return inst;
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
+        //input = (EditText) findViewById(R.id.input);*/
 
         Bundle extras = getIntent().getExtras();
-        Presenter temp = new Gson().fromJson(extras.getString("Presenter"), Presenter.class);
-        presenter = new Presenter(this);
-        presenter.copyPresenter(temp);
-        //input = (EditText) findViewById(R.id.input);
+        List<String> temp = extras.getStringArrayList("Groups");
+        List<String> tempIDs = extras.getStringArrayList("GroupIDs");
+        presenter = new Presenter(this, temp, tempIDs);
+        listofPeople = presenter.getGroup(extras.getInt("index"));
 
         people = (ListView) findViewById(R.id.peoples);
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listofPeople);
+        //arrayAdapter = new ArrayAdapter<>(this, R.layout.contact_display, *viewID* , listofPeople);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_multichoice, listofPeople);
         people.setAdapter(arrayAdapter);
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -110,6 +106,7 @@ public class DisplayGroupActivity extends AppCompatActivity {
             //  }
         } while (smsInboxCursor.moveToNext());
     }
+
     public static String getContactName(Context context, String phoneNo) {
         ContentResolver cr = context.getContentResolver();
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNo));

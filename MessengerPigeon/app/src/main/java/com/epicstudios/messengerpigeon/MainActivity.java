@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private Presenter presenter;
-    private List<String> groupList;
-    private List<String> peopleList = new ArrayList<>();
     private ListView groups;
     private ArrayAdapter groupAdapter;
     private SharedPreferences prefs;
@@ -49,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         presenter = new Presenter(this);
-        groupList = presenter.getGroups();
-        groupAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, groupList);
+        groupAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, presenter.getGroups());
         groups = (ListView) findViewById(R.id.peoples);
         groups.setAdapter(groupAdapter);
         groups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -123,17 +121,16 @@ public class MainActivity extends AppCompatActivity {
      */
     public void displayGroup(View view) {
         int id = view.getId();
-        Log.i(TAG, groupList.get(id));
-        /////////////////////////////////////////////////////
-       /* peopleList.add("Person 1");
-        peopleList.add("Person 2");
-        ////////////////////////////////////////////////////
-        ArrayAdapter peopleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, peopleList);
-        groups.setAdapter(peopleAdapter);*/
-
         Intent intent = new Intent(this, DisplayGroupActivity.class);
-        intent.putExtra("Group", groupList.get(id));
-        intent.putExtra("Presenter", new Gson().toJson(presenter));
+        intent.putExtra("index", id);
+        intent.putExtra("Groups", (ArrayList<String>) presenter.getGroups());
+        intent.putExtra("GroupIDs", (ArrayList<String>) presenter.getGroupIDs());
+        /*Gson gson = new Gson();
+        Log.d(TAG, "gson created");
+        String json = gson.toJson(presenter);
+        Log.d(TAG, "json created");
+        Log.d(TAG, json);
+        intent.putExtra("Presenter", json);*/
         startActivity(intent);
     }
 
