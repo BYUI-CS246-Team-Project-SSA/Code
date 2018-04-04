@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = prefs.getString(EMAIL, null);
         Log.d(TAG, "Successfully retrieved email = " + email);
         String pass = prefs.getString(PASSWORD, null);
-        Log.d(TAG, "Successfully retrieved password = " + pass);
+        //Log.d(TAG, "Successfully retrieved password = " + pass);
 
         logEmail = (EditText) findViewById(R.id.login_email);
         logPswd = (EditText) findViewById(R.id.login_pswd);
@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.d(TAG, "Email is not null = " + email);
             logEmail.setText(email);
             if (pass != null) {
-                Log.d(TAG, "Password is not null = " + pass);
+                //Log.d(TAG, "Password is not null = " + pass);
                 signIntoAccount(email, pass);
             }
         }
@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIntoAccount(final String email, final String pswd) {
-        Log.d(TAG, "Started signIntoAccount() with email="+email+" and pass="+pswd);
+        //Log.d(TAG, "Started signIntoAccount() with email="+email+" and pass="+pswd);
         if (TextUtils.isEmpty(email))
         {
             Toast.makeText(LoginActivity.this,
@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "Editor created");
                             Log.d(TAG, "putting email with string "+ email);
                             editor.putString(EMAIL, email);
-                            Log.d(TAG, "putting password with string "+ pswd);
+                            //Log.d(TAG, "putting password with string "+ pswd);
                             editor.putString(PASSWORD, pswd);
                             Log.d(TAG, "about to apply");
                             editor.apply();

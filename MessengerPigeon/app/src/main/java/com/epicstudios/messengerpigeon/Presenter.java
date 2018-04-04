@@ -9,10 +9,14 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.util.Pair;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /*
@@ -33,8 +37,8 @@ public class Presenter {
     private List<String> groups = new ArrayList<>();
     private List<String> groupIDs = new ArrayList<>();
     private ContentResolver cr;
-    //private String phonenum = "5053990094";
     private SmsManager smsManager;
+    //private String phonenum = "5053990094";
     //TO DO private Database =
 
     /**
@@ -84,14 +88,6 @@ public class Presenter {
     public List<String> getGroupIDs(){ return groupIDs; }
 
     /**
-     * addConversation creates a new sms or mms object to be sent
-     * @param persons the numbers of the participants
-     */
-    public void addConversation(List<String> persons) {
-
-    }
-
-    /**
      * makes list of all the groups saved on your phone(/google) by String name
      */
     private void retrieveGroups() { //TODO DONE
@@ -132,57 +128,58 @@ public class Presenter {
      * @param index the index of the group that is being shown
      * @return the list of contacts, with phone numbers, in group
      */
-    public List<String> getGroup(int index){
+    public ArrayList<Pair<Long, String>> getGroup(int index){
         String title = groups.get(index);
         String id = groupIDs.get(index);
-        List<String> people = new ArrayList<>();
+        Log.d(TAG, "groupID = "+id);
+        ArrayList<Pair<Long, String>> people = new ArrayList<Pair<Long, String>>();
 
         final String GROUPMEMBERSHIP = "'"+ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE+"'";
-
-        Uri contact = ContactsContract.Contacts.CONTENT_URI;
-        String[] clmsC = new String[]{
-                ContactsContract.Contacts.DISPLAY_NAME_PRIMARY,
-                ContactsContract.Contacts._ID
-        };
-        String selectionC = ContactsContract.Contacts.HAS_PHONE_NUMBER+"=1 AND "+
-                ContactsContract.Contacts.IN_VISIBLE_GROUP+"=1";
 
         Uri data = ContactsContract.Data.CONTENT_URI;
         String[] clmsD = new String[]{
                 ContactsContract.Data.DISPLAY_NAME,
                 ContactsContract.Data.IN_VISIBLE_GROUP,
                 ContactsContract.Data.CONTACT_ID,
+                ContactsContract.Contacts._ID,
+                ContactsContract.Data.LOOKUP_KEY,
                 ContactsContract.Data.MIMETYPE,
-                ContactsContract.Data.DATA1
+                ContactsContract.Data.DATA1,
         };
+
         String selection = ContactsContract.Data.HAS_PHONE_NUMBER+"=1 AND "+
                 ContactsContract.Data.MIMETYPE+"="+GROUPMEMBERSHIP+" AND "+
                 ContactsContract.Data.DATA1+"=?";
         String[] selectionArgs = {id};
+
         Cursor cursor = cr.query(data, clmsD, selection, selectionArgs, null);
 
         final int idPos = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID);
         final int namePos = cursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME);
         final int dataPos = cursor.getColumnIndex(ContactsContract.Data.DATA1);
         final int mimePos = cursor.getColumnIndex(ContactsContract.Data.MIMETYPE);
+        final int lookupPos = cursor.getColumnIndex(ContactsContract.Data.LOOKUP_KEY);
         //final int photoPos = cursor.getColumnIndex(ContactsContract.Data.PHOTO_URI);
 
-        //final int CidPos = cursor.getColumnIndex(ContactsContract.Contacts._ID);
+        final int CidPos = cursor.getColumnIndex(ContactsContract.Contacts._ID);
         //final int CnamePos = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
 
         if (cursor != null) {
             if(cursor.getCount() < 1) {
-                people.add("Something went Wrong: Found no Contacts in Group "+ title);
+                Pair<Long, String> temp = new Pair<Long, String>(0L, "Something went Wrong: Found no Contacts in Group "+ title);
+                people.add(temp);
             }
             else{
                 while(cursor.moveToNext()) {
                     String name = cursor.getString(namePos);
-                    String ID = cursor.getString(idPos);
+                    long ID = cursor.getLong(idPos);
+                    String lookup = cursor.getString(lookupPos);
                     Log.d(TAG+"Contacts", "NAME = "+ name);
-                    Log.d(TAG+"Contacts", "ID = "+ID);
-                    Log.d(TAG+"Contacts", "MIMETYPE = "+cursor.getString(mimePos));
-                    Log.d(TAG+"Contacts", "DATA1 = "+cursor.getString(dataPos));
-                    people.add(name);
+                    Log.d(TAG+"Contacts", "CONTACT_ID = "+ID);
+                    Log.d(TAG+"Contacts", "_ID = "+cursor.getString(CidPos));
+                    Log.d(TAG+"Contacts", "LOOKUP_KEY = "+lookup);
+                    Pair<Long, String> temp = new Pair<Long, String>(ID, name);
+                    people.add(temp);
                 }
             }
         }
@@ -202,15 +199,45 @@ public class Presenter {
     }
 
     /**
+     * addConversation creates a new sms or mms object to be sent
+     * @param persons the numbers of the participants
+     */
+    public void addConversation(List<String> persons) {
+
+
+    }
+
+    /**
      * Retrieves the contact associated with a phone number
      *
-     * @param phoneNo The number to search for
-     * @return Contact Name
+     * @param ID The ID of the contact to search for
+     * @return the cursor containing all the info in the data table for this contact
      */
-    private String getContactName(String phoneNo) {
-        String Name = phoneNo;
-        ContentResolver cr = context.getContentResolver();
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNo));
+    private Cursor getContactByID(long ID) {
+        String SingleSelection = ContactsContract.Data.CONTACT_ID+" = "+ID;
+        Cursor SingleCursor = cr.query(ContactsContract.Data.CONTENT_URI, null, SingleSelection, null, null);
+
+        int colm_count = SingleCursor.getColumnCount();
+        Log.d(TAG + "SingleCursor", "ColumCount = " + colm_count);
+        int display_index = SingleCursor.getColumnIndex("display_name");
+        Log.d(TAG + "SingleCursor", "nameIndex = " + display_index);
+        String[] colms = SingleCursor.getColumnNames();
+        for(String colm:colms){
+            Log.d(TAG+"SingleCursor", colm);
+        }
+
+        if (SingleCursor != null) {
+            if (SingleCursor.getCount() > 0) {
+                while(SingleCursor.moveToNext()) {
+                    String display_name = SingleCursor.getString(display_index);
+                    Log.d(TAG + "SingleCursor", "Name = " + display_name);
+                }
+            }
+        }
+        return SingleCursor;
+    }
+        /*ContentResolver cr = context.getContentResolver();
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(name));//only for phone#s
         Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
         if (cursor == null) {
             return Name;
@@ -221,8 +248,7 @@ public class Presenter {
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
-        return Name;
-    }
+        return Name;*/
 
     public void send(String person){
         String textToSend = " has started a conversation"; //TODO add users name
