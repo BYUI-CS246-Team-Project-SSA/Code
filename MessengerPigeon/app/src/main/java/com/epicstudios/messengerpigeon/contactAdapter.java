@@ -1,16 +1,20 @@
 package com.epicstudios.messengerpigeon;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,12 +24,17 @@ import java.util.List;
 public class contactAdapter extends BaseAdapter {
     private List<Pair<Long, String>> objects;
     private Activity context;
+    private int layout;
+    private HashMap<Long, Bitmap> photos;
 
-    public contactAdapter(Activity context, int layout, List<Pair<Long, String>> objects) {
+    contactAdapter(Activity context, int layout, List<Pair<Long, String>> objects, HashMap photos) {
         //super(context, layout);//, objects);
-        Log.d("AdapterContact:", "Created ContactAdapter with people "+ objects.toString());
+        Log.d("AdapterContact:", "Created contactAdapter with people "+ objects.toString());
         this.objects = objects;
         this.context = context;
+        this.layout = layout;
+        this.photos = photos;
+        Log.d("AdapterContact:", "Created contactAdapter with photos "+ photos.toString());
     }
 
     @Override
@@ -58,6 +67,8 @@ public class contactAdapter extends BaseAdapter {
                 //(LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.contact_display, null);
         }
+        //Log.d("AdapterContact:", "Called getView with view "+v.toString());
+        Drawable draw = context.getResources().getDrawable(R.drawable.default_profile);
 
 		/*
 		 * Recall that the variable position is sent in as an argument to this method.
@@ -74,11 +85,20 @@ public class contactAdapter extends BaseAdapter {
             // These TextViews are created in the XML files we defined.
 
             TextView tt = (TextView) v.findViewById(R.id.name);
+            ImageView iv = (ImageView) v.findViewById(R.id.ContactPhoto);
 
             // check to see if each individual textview is null.
             // if not, assign some text!
             if (tt != null){
                 tt.setText(i.second);
+            }
+            if (iv != null) {
+                if (photos.containsKey(i.first)) {
+                    Log.d("AdapterContact:", "photos triggered with id " + i.first);
+                    iv.setImageBitmap(photos.get(i.first));
+                } else {
+                    iv.setImageDrawable(draw);
+                }
             }
         }
         // the view must be returned to our activity
