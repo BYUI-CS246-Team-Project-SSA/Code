@@ -25,7 +25,7 @@ public class Bird {
 	/* X is [0;800]
 	 * Y is [0;1280]
 	 * YSpeed [-0.9; 0.6] and is Flappy's speed in y-direction
-	 * rotation is in the range [-20°;20°] and is the strategy of Flappy
+	 * rotation is in the range [-20&deg;;20&deg;] and is the strategy of Flappy
 	 * rotSpeed is the speed at which Flappy is spinning
 	 * lastUp is a time when up() was last activated
 	 */

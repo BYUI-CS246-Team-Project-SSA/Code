@@ -232,6 +232,7 @@ public class Presenter {
                     ContactsContract.Data.CONTACT_ID + "=?" + " AND "
                             + ContactsContract.Data.MIMETYPE + "='" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE + "'",
                     new String[]{String.valueOf(person.first)}, null);
+
             if(c != null) {
                 c.moveToFirst();
                 int type = c.getInt(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));

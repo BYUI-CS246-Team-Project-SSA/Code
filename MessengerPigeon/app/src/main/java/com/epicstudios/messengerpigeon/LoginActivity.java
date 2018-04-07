@@ -30,7 +30,6 @@ public class LoginActivity extends AppCompatActivity {
     private final String PREF_FILE = "com.epicstudios.messengerPigeon.LOGIN_PREF";
     private final String TAG = "LogInActivity:";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "about to apply");
                             editor.apply();
                             Log.d(TAG, "Preferences applied");
-                            ////
+
                             Intent mainIntent = new Intent(LoginActivity.this,
                                     MainActivity.class);
                             mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
