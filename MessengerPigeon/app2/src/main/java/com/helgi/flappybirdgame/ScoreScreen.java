@@ -13,13 +13,13 @@ import com.helgi.framework.Input.TouchEvent;
 
 
 public class ScoreScreen extends Screen {
-	// Viðfangsbreytur
-	Paint paint; // Þetta er leturgerðin í notkun
+	// Target Parameters
+	Paint paint; // This is the font in use
 	
     public ScoreScreen(Game game) {
         super(game);
         
-        // Stillum allt sem við viljum fyrir font í scores
+        // Configure all we want for font in scores
         paint = new Paint();
         paint.setTextSize(60);
         paint.setTextAlign(Paint.Align.CENTER);
@@ -32,17 +32,17 @@ public class ScoreScreen extends Screen {
         Graphics g = game.getGraphics();
         List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 
-        // Þegar ýtt er einhversstaðar á skjáinn verður len > 0 og því keyrist forlykkjan
+        // When you press somewhere on the screen, len> 0, and the drive is executed
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
             if (event.type == TouchEvent.TOUCH_UP) { 
             	
             	///////////////
-              	// BACK takki
+              	// BACK button
               	///////////////
                 if (inBounds(event, gameWidth/1.8, gameHeight/1.33, res*230, res*77)) {
-                    // Aftur til MainMenuScreen
+                    // Back to MainMenuScreen
                     game.setScreen(new MainMenuScreen(game));              
                 }
             }
@@ -62,11 +62,11 @@ public class ScoreScreen extends Screen {
     	Graphics g = game.getGraphics();
     	
     	////////////////////////////////////////////////////////////////
-    	// Hérna höfum við öll ScoreScreen elementin okkar, takka o.s.frv.
+    	// Here we have all our ScoreScreen elements, please, etc.
     	////////////////////////////////////////////////////////////////
     	
-    	// Skalinn byrjar efst til vinstri í glugganum
-        // þ.e.a.s. hnitakerfið. Skalinn er 800 x 1280 á S2
+    	// The scale starts at the top left of the window
+        // ie. grid. The scale is 800 x 1280 on S2
     	
     	g.drawImage(Assets.background, matrix, 0, 0, 0, res*1.04, false);
     	g.drawImage(Assets.backgroundBase, matrix, 0, gameHeight/1.1445, 0, res*1.04*0.9615, false);
@@ -75,7 +75,7 @@ public class ScoreScreen extends Screen {
         g.drawImage(Assets.bird2, matrix, gameWidth/1.16, gameHeight/10, 0, res, true);
         //g.drawImage(Assets.back, matrix, gameWidth/1.8, gameHeight/1.33, 0, res, false);
         
-        // hérna setjum við inn forlykkju sem setur inn öll stigin
+        // here we insert a plug that will insert all the points
     }
 
 
@@ -101,7 +101,5 @@ public class ScoreScreen extends Screen {
     @Override
     public void backButton() {
         //Display "Exit Game?" Box
-
-
     }
 }

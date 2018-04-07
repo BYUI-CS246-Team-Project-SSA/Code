@@ -12,21 +12,20 @@ public class LoadingScreen extends Screen {
         super(game);
     }
 
-    // Þegar kallað er á loading screen update MainMenuScreen
-    // neðst í fallinu (þ.e. þetta fall keyrist bara einu sinni)
+    // When the loading screen update is called MainMenuScreen
+    // at the bottom of the case (ie this case only runs once)
     @Override
     public void update(float deltaTime) {
-    	/* Hérna hlöðum við inn skrárnar sem verða í notkun í forritinu.
-         * Allar skrárnar þurfa að vera í "assets" möppu verkefnisins (project).
-         * 
-         * Svona "loadast" leikurinn. Hlöðum öllum myndum og hljóðum inn
-         * í viðfangsbreytur sem eru skilgreindar inn í Assets.java
-    	 * 
-    	 * Búum til eintak af þeim paint föllum sem við þurfum að nota.
-    	 * LoadingScreen tók inn "game" og viljum fá graphics föllin sem
-    	 * getGraphics() gefur.
-    	 */
-    	
+        /*
+        Here we load the files that will be used in the application.
+        * All files must be in the "assets" folder of the project (project).
+        * Such a "loadast" game. Lets all pictures and sounds
+        * in the parameters that are defined in Assets.java
+        * Create a copy of the paint drops we need.
+        * LoadingScreen took a "game" and want to get the graphics as a
+        * getGraphics () provides.
+        */
+
         Graphics g = game.getGraphics();
         
         //////////////////
@@ -51,8 +50,7 @@ public class LoadingScreen extends Screen {
         Assets.getReady 		= g.newImage("GameScreen/GetReady.png", ImageFormat.ARGB4444);
         Assets.getReadyTap		= g.newImage("GameScreen/GetReadyTap.png", ImageFormat.ARGB4444);
         Assets.pauseButton		= g.newImage("GameScreen/PauseButton.png", ImageFormat.RGB565);
-        
-        //Assets.bird1 			= g.newImage("GameScreen/Bird/Bird1.png", ImageFormat.ARGB4444);
+
         Assets.bird1 			= g.newImage("GameScreen/Bird/Pigeon_down_trans.png", ImageFormat.ARGB4444);
         Assets.bird2 			= g.newImage("GameScreen/Bird/Pigeon_mid_trans.png", ImageFormat.ARGB4444);
         Assets.bird3 			= g.newImage("GameScreen/Bird/Pigeon_up_trans.png", ImageFormat.ARGB4444);
@@ -75,11 +73,11 @@ public class LoadingScreen extends Screen {
         Assets.MedalPremium		= g.newImage("GameOverScreen/MedalPremium.png", ImageFormat.ARGB4444);
         Assets.ok 				= g.newImage("GameOverScreen/Ok.png", ImageFormat.RGB565);
         
-        // Dæmi um að búa til hljóð
+        // An example of creating a sound
         //Assets.click = game.getAudio().createSound("explode.ogg");
 
-        // Hérna runnar svo leikurinn eftir að búið er að hlaða inn öllum hlutunum.
-        // Þ.e., hoppar yfir í MainMenuScreen.java
+        // Here's the run after the game has been loaded.
+        // ie, skips to MainMenuScreen.java
         game.setScreen(new MainMenuScreen(game));
 
 
@@ -88,7 +86,7 @@ public class LoadingScreen extends Screen {
 
     @Override
     public void paint(float deltaTime) {
-	    // Gerum svartan ferning svo borðinn fyrir appið birtist ekki
+	    // Make a black square so the app for the app is not displayed
     }
 
 

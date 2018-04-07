@@ -18,7 +18,7 @@ public class GameScreen extends Screen {
         Ready, Running, Paused, GameOver
     }
 
-    // Stillum þetta svona svo það sé fyrst kallað á updateReady aðferðina
+    // Set this up so it calls the updateReady method
     GameState state = GameState.Ready;
 
     // Variable Setup
@@ -38,9 +38,9 @@ public class GameScreen extends Screen {
         flappy = new Bird(game, this);
 
         pipes = new PipePair[3];
-        pipes[0] = new PipePair(game, this, 1.5*gameWidth);
-        pipes[1] = new PipePair(game, this, 2.0*gameWidth);
-        pipes[2] = new PipePair(game, this, 2.5*gameWidth);
+        pipes[0] = new PipePair(game, this, 1.7*gameWidth);
+        pipes[1] = new PipePair(game, this, 2.5*gameWidth);
+        pipes[2] = new PipePair(game, this, 2.9*gameWidth);
         pipenum = 0;
 
         FlappyFont.setTextSize(70);
@@ -68,7 +68,7 @@ public class GameScreen extends Screen {
         }*/
     }
 
-    // Eftir að MainMenuScreen kallar á GameScreen ræsist þessi aðferð, update.
+    // After MainMenuScreen calls GameScreen, this method, update, starts.
     @Override
     public void update(float deltaTime) {
         List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
@@ -76,10 +76,10 @@ public class GameScreen extends Screen {
         // We have four separate update methods in this example.
         // Depending on the state of the game, we call different update methods.
         
-        // Notfærum okkur enum Gamestate sem við skilgreindum efst til þess að keyra mismunandi
-        // update aðferðir við mismunandi aðstæður leiksins
+        // We use the Gamestate we defined at the top to run different
+        // update methods for different circumstances of the game
         if (state == GameState.Ready)
-            updateReady(touchEvents); // Í upphafi er þá kallað á þetta
+            updateReady(touchEvents); // Initially, this is called
         if (state == GameState.Running)
             updateRunning(touchEvents, deltaTime);
         if (state == GameState.Paused)
@@ -104,7 +104,7 @@ public class GameScreen extends Screen {
         // state now becomes GameState.Running.
         // Now the updateRunning() method will be called!
        
-    	// Ef það er einhversskonar snerting gerð á snertiskjáinn keyrum við leikinn hér
+    	// If there is any kind of touch on the touch screen, we run the game here
         if (touchEvents.size() > 0)
             state = GameState.Running;*/
     }
@@ -147,10 +147,10 @@ public class GameScreen extends Screen {
         // CHECKS
         ///////////
         
-        // Árekstur
+        // Conflict
         checkCollision();
         
-        // Stigagjöf
+        // Ratings
         if (Math.abs((pipes[pipenum].X+20)-flappy.X) < 20) {
         	score++;
         	if (pipenum != 2) pipenum++;
@@ -192,17 +192,17 @@ public class GameScreen extends Screen {
         Graphics g = game.getGraphics();
         
         ////////////////////////////////////////////////////////////////
-        // Hérna höfum við öll GetReady elementin okkar, takka o.s.frv.
+        // Here we have all our GetReady elements, thank you etc.
         ////////////////////////////////////////////////////////////////
 
-        // Skalinn byrjar efst til vinstri í glugganum
-        // þ.e.a.s. hnitakerfið. Skalinn er 480 x 800 á S2
+        // The scale starts at the top left of the window
+        // ie. grid. The scale is 480 x 800 on S2
         
         g.drawImage(Assets.getReady, matrix, gameWidth/5.33, gameHeight/4.44, 0, res, false);
         g.drawImage(Assets.getReadyTap, matrix, gameWidth/2.67, gameHeight/2.47, 0, res, false);
     }
 
-    // Þetta teiknar hvern hlut í því standi sem hann er í
+    // This draws each item in the state in which it is located
     private void drawRunningUI() {
         Graphics g = game.getGraphics();
     }
@@ -253,12 +253,12 @@ public class GameScreen extends Screen {
     }
     
     public void checkCollision() {
-    	// Jörð
+    	// ground
     	if (flappy.Y > gameHeight*0.83) state = GameState.GameOver;
-    	// Pípur
+    	// pipes
     	for (int i = 0; i < 3; i++) {
     		if (Math.abs(flappy.X-pipes[i].X) < 60) {
-    			if (Math.abs(flappy.Y-pipes[i].Y) > 61) {
+    			if (Math.abs(flappy.Y-pipes[i].Y) > 67) { //61
         	   		state = GameState.GameOver;
         	   	}
     		}
@@ -274,7 +274,7 @@ public class GameScreen extends Screen {
     public void paint(float deltaTime) {
         Graphics g = game.getGraphics();
 
-        // Þar sem það er fyrst kallað á paint() teiknum við öll grunnelement hér
+        // Since it first calls paint (), we have all the basic elements here
         g.drawImage(Assets.background, matrix, 0, 0, 0, res*1.04, false);
         
         for (int i = 0; i < 3; i++) {

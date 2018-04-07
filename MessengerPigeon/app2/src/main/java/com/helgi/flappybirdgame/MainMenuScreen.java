@@ -12,60 +12,60 @@ import com.helgi.framework.Screen;
 import com.helgi.framework.Input.TouchEvent;
 
 public class MainMenuScreen extends Screen {
-	// Viðfangsbreytur
-	Paint font; // Þetta er leturgerðin í notkun
+	// Target Parameters
+	Paint font; // This is the font in use
 	
     public MainMenuScreen(Game game) {
         super(game);
         
-        /* Dæmi fyrir stillingar um font
+        /* An example of font settings
         font = new Paint();
         font.setTextSize(30);
         font.setTextAlign(Paint.Align.CENTER);
         font.setAntiAlias(true);
         font.setColor(Color.WHITE);
         
-        síðan er gert t.d.:
+        then it is done for example:
         Graphics g = game.getGraphics();
          g.drawString("Tap each side of the screen to", 400, 650, paint); */
     }
 
 
-    /* Þegar LoadingScreen kallar á MainMenuScreen þá keyrist þessi aðferð. Það er kallað í sífellu á þessa
-     * update aðferð þangað til að eitthvað gerist
+    /* When LoadingScreen calls MainMenuScreen, this method runs. It constantly calls
+     * update process until something happens
      */
     @Override
     public void update(float deltaTime) {
         Graphics g = game.getGraphics();
         List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 
-        // Þegar ýtt er einhversstaðar á skjáinn verður len > 0 og því keyrist forlykkjan
+        // When you press somewhere on the screen, len> 0, and the drive is executed
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
             if (event.type == TouchEvent.TOUCH_UP) {
             	
             	/////////////////////////////////////////////////////////
-            	// Hérna er það sem gerist þegar ýtt er á takka o.s.frv.
+            	// Here's what happens when you press keys, etc.
             	/////////////////////////////////////////////////////////
             	
-            	// Ef snertiskjárinn skynjar snertingu á fleti sem hefur hornpunkt (0,0), breidd 250 og hæð 250
-            	// Þá er kallað á GameScreen sem er leikurinn sjálfur í keyrslu. (0,0) er efst til vinstri í
-            	// glugga Android tækisins.
-            	// Þurfum að stilla þetta að réttu gildi, hverjum takka o.s.frv.
+            	// If the touchscreen detects contact on a surface having a hub (0.0), width 250 and height 250
+                // Then it is called GameScreen which is the game itself running. (0,0) is at the top left of
+                // Android device window.
+                // Must set this to the correct value, each key, etc.
             	
             	///////////////
-            	// START takki
+            	// START button
             	///////////////
                 if (inBounds(event, gameWidth/6, gameHeight/1.33, res*230, res*77)) {
-                	// Hefjum spilun
+                	// Start playback
                     game.setScreen(new GameScreen(game));              
                 }
                 /*///////////////
-              	// SCORE takki
+              	// SCORE button
               	///////////////
                   if (inBounds(event, gameWidth/1.8, gameHeight/1.33, res*230, res*77)) {
-                  	// Hefjum spilun
+                  	// Start playback
                       game.setScreen(new ScoreScreen(game));              
                   }*/
             }
@@ -88,11 +88,11 @@ public class MainMenuScreen extends Screen {
     	Graphics g = game.getGraphics();
     	
     	////////////////////////////////////////////////////////////////
-    	// Hérna höfum við öll MainMenu elementin okkar, takka o.s.frv.
+    	// Here we have all our MainMenu elements, thank you etc.
     	////////////////////////////////////////////////////////////////
     	
-    	// Skalinn byrjar efst til vinstri í glugganum
-        // þ.e.a.s. hnitakerfið. Skalinn er 800 x 1280 á S2
+    	// The scale starts at the top left of the window
+        // ie. grid. The scale is 800 x 1280 on S2
     	
         g.drawImage(Assets.background, matrix, 0, 0, 0, res*1.04, false);
         g.drawImage(Assets.backgroundBase, matrix, 0, gameHeight/1.1445, 0, res*1.04*0.9615, false);
@@ -101,10 +101,10 @@ public class MainMenuScreen extends Screen {
         g.drawImage(Assets.start, matrix, gameWidth/6, gameHeight/1.33, 0, res, false);
         //g.drawImage(Assets.score, matrix, gameWidth/1.8, gameHeight/1.33, 0, res, false);
         
-        // Teiknar fylltan kassa
-        //g.drawRect(0, 0, 780, 1260, Color.BLACK);
-        // Þetta væri dæmi um þegar skrifaður er strengur á skjáinn.
-        // Hvað stendur, staðsetning og letur. Letrið font er viðfangsbreyta í þessum klasa
+        // Draws a filled box
+        //g.drawRect (0, 0, 780, 1260, Color.BLACK);
+        // This is an example of when a string is written on the screen.
+        // What, location and font. The font font is a parameter converter in this class
         // g.drawString("Tap to play.", 240, 400, font);
     }
 
