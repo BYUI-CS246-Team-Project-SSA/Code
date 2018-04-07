@@ -217,7 +217,7 @@ public class Presenter {
      * addConversation creates a new sms or mms object to be sent
      * @param people the numbers of the participants
      */
-    void addConversation(List<Pair<Long, String>> people) {
+    void addConversation(List<Pair<Long, String>> people, String message) {
         List<String> phonNums = new ArrayList<>();
         final int main = ContactsContract.CommonDataKinds.Phone.TYPE_MAIN;
         final int mobile = ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
@@ -242,7 +242,7 @@ public class Presenter {
         }
         Log.d(TAG+"numbers", "phonenumbers = "+phonNums.toString());
         smsManager = SmsManager.getDefault();
-        for(String num: phonNums) { send(num); }
+        for(String num: phonNums) { send(num, message); }
     }
 
     /**
@@ -319,9 +319,11 @@ public class Presenter {
         }
         return phonenumber;*/
 
-    private void send(String phonenum){
+    private void send(String phonenum, String message){
         Log.d(TAG, "phonenumber = "+ phonenum);
-        String textToSend = " has started a conversation"; //TODO add users name
+        String textToSend;
+        if(message.equals("")) { textToSend = " has started a conversation"; }//TODO add users name
+        else { textToSend = message; }
         smsManager.sendTextMessage(phonenum, null, textToSend, null, null);
         Toast.makeText(context, "Message sent!", Toast.LENGTH_SHORT).show();
     }

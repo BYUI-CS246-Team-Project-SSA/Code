@@ -65,6 +65,7 @@ public class DisplayGroupActivity extends AppCompatActivity {
      */
     @TargetApi(Build.VERSION_CODES.M)
     public void onSendClick(View view) {
+        String message = input.getText().toString();
         List<Pair<Long, String>> peoples = new ArrayList<>();
         for(int x = 0; x < listPeople.size(); x++) {
             if(!contactAdapter.isChecked(x)){ peoples.add(listPeople.get(x)); }
@@ -80,7 +81,7 @@ public class DisplayGroupActivity extends AppCompatActivity {
                 requestPermissions(new String[]{Manifest.permission.SEND_SMS},
                         SEND_SMS_PERMISSIONS_REQUEST);
             }
-        } else { presenter.addConversation(peoples); }
+        } else { presenter.addConversation(peoples, message); input.setText(""); }
 
         /*if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.SEND_SMS)//TODO mms
                 != PackageManager.PERMISSION_GRANTED) {
