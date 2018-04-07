@@ -38,9 +38,9 @@ public class GameScreen extends Screen {
         flappy = new Bird(game, this);
 
         pipes = new PipePair[3];
-        pipes[0] = new PipePair(game, this, 1.7*gameWidth);
-        pipes[1] = new PipePair(game, this, 2.5*gameWidth);
-        pipes[2] = new PipePair(game, this, 2.9*gameWidth);
+        pipes[0] = new PipePair(game, this, 1.0*gameWidth);
+        pipes[1] = new PipePair(game, this, 1.5*gameWidth);
+        pipes[2] = new PipePair(game, this, 2.0*gameWidth);
         pipenum = 0;
 
         FlappyFont.setTextSize(70);

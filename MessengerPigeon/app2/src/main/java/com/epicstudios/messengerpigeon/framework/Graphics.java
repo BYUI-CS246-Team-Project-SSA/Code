@@ -27,7 +27,7 @@ public interface Graphics {
 	public void drawImage(Image image, Matrix matrix, double x, double y,
 			double rotation, double scale, boolean center);
 	
-	// nota �etta ekki
+	// do not use this
 	public void drawImage(Image image, int x, int y, int srcX, int srcY,
 			int srcWidth, int srcHeight);
 

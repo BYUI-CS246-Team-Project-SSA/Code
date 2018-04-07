@@ -40,9 +40,9 @@ public class Bird {
 	    rotSpeed = 0;
 	    matrix = new Matrix();
 	    anim = new Animation();
-	    anim.addFrame(Assets.bird1, 40);
-		anim.addFrame(Assets.bird2, 40);
-		anim.addFrame(Assets.bird3, 40);
+	    anim.addFrame(Assets.bird1, 20);
+		anim.addFrame(Assets.bird2, 20);
+		anim.addFrame(Assets.bird3, 20);
 	}
 
 	public void update(float deltaTime) {
