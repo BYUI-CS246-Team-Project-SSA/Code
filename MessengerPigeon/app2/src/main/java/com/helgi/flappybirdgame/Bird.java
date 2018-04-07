@@ -2,8 +2,8 @@ package com.helgi.flappybirdgame;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import com.helgi.framework.Graphics; // Til að geta búið til Graphics g
-import com.helgi.framework.Game; // til að geta sótt föllin eins og drawImage
+import com.helgi.framework.Graphics; // In order to create Graphics g
+import com.helgi.framework.Game; // to retrieve the drops like drawImage
 import com.helgi.framework.Image;
 import com.helgi.framework.implementation.Animation;
 import com.helgi.framework.Screen;
