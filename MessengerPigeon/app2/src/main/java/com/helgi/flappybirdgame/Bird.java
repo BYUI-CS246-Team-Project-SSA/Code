@@ -14,7 +14,7 @@ public class Bird {
 	double res;
 	double gameWidth;
 	double gameHeight;
-	Matrix matrix; // Búum til reglu um hvernig pixlunum er raðað í snúnu myndinni
+	Matrix matrix; // Consider how the pixels are arranged in the rotated image
 	public double X;
 	public double Y;
 	private double rotation;
@@ -22,12 +22,12 @@ public class Bird {
 	private double rotSpeed;
 	private Animation anim;
 	
-	/* X er [0;800]
-	 * Y er [0;1280]
-	 * YSpeed [-0.9; 0.6] og er hraði Flappy í y-stefnu
-	 * rotation er á bilinu [-20°;20°] og er stefna Flappy
-	 * rotSpeed er sá hraði sem Flappy er að snúast um
-	 * lastUp er tími þegar up() var síðast virkjað
+	/* X is [0;800]
+	 * Y is [0;1280]
+	 * YSpeed [-0.9; 0.6] and is Flappy's speed in y-direction
+	 * rotation is in the range [-20°;20°] and is the strategy of Flappy
+	 * rotSpeed is the speed at which Flappy is spinning
+	 * lastUp is a time when up() was last activated
 	 */
 	
 	public Bird (Game game, Screen scr) {
@@ -48,7 +48,7 @@ public class Bird {
 	}
 
 	public void update(float deltaTime) {
-	    manageAccAndRot(deltaTime); // Hröðun niður á við og snúningur
+	    manageAccAndRot(deltaTime); // Acceleration downward and rotation
 	    anim.update(deltaTime);  
 	}
 	
@@ -58,19 +58,19 @@ public class Bird {
 	  
 	public void up() {
 	    if (Y > gameHeight/20) {
-	      YSpeed = gameHeight/60; // Hröðun upp á við
+	      YSpeed = gameHeight/60; // Acceleration upwards
 	      Y -= gameHeight/200;
 	      rotSpeed = 18; 
 	  }
 	}
 	  
 	public void manageAccAndRot(float deltaTime) {
-		if (YSpeed > -200) YSpeed -= 0.6*deltaTime;// Hröðun niður á við, YSpeed
+		if (YSpeed > -200) YSpeed -= 0.6*deltaTime;// Acceleration downward, YSpeed
 		Y -= YSpeed;
 		
-		if (rotSpeed > -4) rotSpeed -= 0.24*deltaTime; // Hámarkshornhraði réttsælissnúnings er |-4|
+		if (rotSpeed > -4) rotSpeed -= 0.24*deltaTime; // The maximum clockwise rotation speed is |-4|
 	    if (-90 < rotation || rotSpeed > 0) rotation += rotSpeed;
-	    if (rotation > 45) {rotation = 45; rotSpeed = 0;} // Svo fuglinn fari ekki í yfirsnúning
+	    if (rotation > 45) {rotation = 45; rotSpeed = 0;} // So the bird does not get in a corner
 	}
 	  
 	  

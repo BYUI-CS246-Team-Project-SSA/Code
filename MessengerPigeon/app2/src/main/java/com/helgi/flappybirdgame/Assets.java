@@ -49,7 +49,7 @@ public class Assets {
     public static Image MedalPremium;
     public static Image ok;
     
-    // Dæmi um að skilgreina hljóð:
+    // Example of audio definition:
     // public static Sound click;
 }
  
