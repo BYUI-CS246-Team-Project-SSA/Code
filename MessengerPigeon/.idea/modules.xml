@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MessengerPigeon.iml" filepath="$PROJECT_DIR$/MessengerPigeon.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app2/app2.iml" filepath="$PROJECT_DIR$/app2/app2.iml" />
-      <module fileurl="file://C:\Users\ashlo\AndroidStudioProjects\Code\MessengerPigeon\app2\app2.iml" filepath="C:\Users\ashlo\AndroidStudioProjects\Code\MessengerPigeon\app2\app2.iml" />
     </modules>
   </component>
 </project>

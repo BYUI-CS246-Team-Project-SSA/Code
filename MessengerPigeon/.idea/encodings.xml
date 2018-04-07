@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/helgi/flappybirdgame/Assets.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/helgi/flappybirdgame/Bird.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/helgi/flappybirdgame/FlappyBirdGame.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/helgi/flappybirdgame/GameScreen.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/helgi/flappybirdgame/LoadingScreen.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/helgi/flappybirdgame/MainMenuScreen.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/helgi/flappybirdgame/PipePair.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/helgi/flappybirdgame/ScoreScreen.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/messengerpigeon/flappybirdgame/Assets.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/messengerpigeon/flappybirdgame/Bird.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/messengerpigeon/flappybirdgame/FlappyBirdGame.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/messengerpigeon/flappybirdgame/GameScreen.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/messengerpigeon/flappybirdgame/LoadingScreen.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/messengerpigeon/flappybirdgame/MainMenuScreen.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/messengerpigeon/flappybirdgame/PipePair.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/app2/src/main/java/com/messengerpigeon/flappybirdgame/ScoreScreen.java" charset="ISO-8859-1" />
   </component>
 </project>
