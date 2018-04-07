@@ -2,7 +2,6 @@ package com.epicstudios.messengerpigeon;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -11,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,20 +21,20 @@ import java.util.List;
  * Created by chewy on 4/4/2018.
  */
 
-public class contactAdapter extends BaseAdapter {
+public class ContactAdapter extends BaseAdapter {
     private List<Pair<Long, String>> objects;
     private Activity context;
     private int layout;
     private HashMap<Long, Bitmap> photos;
 
-    contactAdapter(Activity context, int layout, List<Pair<Long, String>> objects, HashMap photos) {
+    ContactAdapter(Activity context, int layout, List<Pair<Long, String>> objects, HashMap photos) {
         //super(context, layout);//, objects);
-        Log.d("AdapterContact:", "Created contactAdapter with people "+ objects.toString());
+        Log.d("AdapterContact:", "Created ContactAdapter with people "+ objects.toString());
         this.objects = objects;
         this.context = context;
         this.layout = layout;
         this.photos = photos;
-        Log.d("AdapterContact:", "Created contactAdapter with photos "+ photos.toString());
+        Log.d("AdapterContact:", "Created ContactAdapter with photos "+ photos.toString());
     }
 
     @Override
@@ -65,7 +65,7 @@ public class contactAdapter extends BaseAdapter {
         if (v == null) {
             LayoutInflater inflater = context.getLayoutInflater();
                 //(LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.contact_display, null);
+            v = inflater.inflate(layout, null);
         }
         //Log.d("AdapterContact:", "Called getView with view "+v.toString());
         Drawable draw = context.getResources().getDrawable(R.drawable.default_profile);
@@ -86,6 +86,7 @@ public class contactAdapter extends BaseAdapter {
 
             TextView tt = (TextView) v.findViewById(R.id.name);
             ImageView iv = (ImageView) v.findViewById(R.id.ContactPhoto);
+            CheckBox ckbx = (CheckBox) v.findViewById(R.id.chk_box);
 
             // check to see if each individual textview is null.
             // if not, assign some text!

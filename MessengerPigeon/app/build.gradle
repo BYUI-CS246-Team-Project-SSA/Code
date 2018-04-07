@@ -35,5 +35,6 @@ dependencies {
     //Open source libraries
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.klinkerapps:android-smsmms:4.3.0'
+    //implementation 'com.helgi:flappybirdgame:1.1.0'
 }
 apply plugin: 'com.google.gms.google-services'

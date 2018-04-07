@@ -38,7 +38,7 @@
 
         <activity
             android:name=".RegisterActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".LoginActivity">
         </activity>
 
         <activity android:name=".MainActivity">
@@ -63,13 +63,10 @@
         </activity>
 
         <activity
-            android:name=".AddConversationActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity"/>
 
-        <receiver
+        <!--<receiver
             android:name="com.klinker.android.send_message.SentReceiver"
             android:taskAffinity="com.epicstudios.messengerpigeon.SMS_SENT"/>
         <receiver
@@ -80,6 +77,6 @@
             android:taskAffinity="com.epicstudios.messengerpigeon.MMS_SENT"/>
         <receiver
             android:name="com.klinker.android.send_message.MmsReceivedReceiver"
-            android:taskAffinity="com.epicstudios.messengerpigeon.MMS_RECEIVED"/>
+            android:taskAffinity="com.epicstudios.messengerpigeon.MMS_RECEIVED"/>-->
     </application>
 </manifest>

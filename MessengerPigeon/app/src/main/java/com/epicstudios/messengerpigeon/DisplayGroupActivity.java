@@ -17,7 +17,7 @@ public class DisplayGroupActivity extends AppCompatActivity {
 
     private final String TAG = "DisplayGroupActivity";
     private ListView people;
-    private contactAdapter contactAdapter;
+    private ContactAdapter contactAdapter;
     private Presenter presenter;
     private EditText input;
     ArrayList<Pair<Long, String>> listPeople;
@@ -40,7 +40,7 @@ public class DisplayGroupActivity extends AppCompatActivity {
         Log.d(TAG, "listPeople: "+ listPeople.toString());
 
         people = (ListView) findViewById(R.id.peoples);
-        contactAdapter = new contactAdapter(this, R.layout.contact_display, listPeople, presenter.getPhotos());
+        contactAdapter = new ContactAdapter(this, R.layout.contact_display, listPeople, presenter.getPhotos());
         people.setAdapter(contactAdapter);
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -50,7 +50,6 @@ public class DisplayGroupActivity extends AppCompatActivity {
 
     /**
      * checks for permissions then calls the send function in presenter
-     *
      * @param view the button
      */
     public void onSendClick(View view) {

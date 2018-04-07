@@ -2,9 +2,12 @@ package com.epicstudios.messengerpigeon;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -15,8 +18,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private Presenter presenter;
     private ListView groups;
     private ArrayAdapter groupAdapter;
-    private SharedPreferences prefs;
     public static boolean active = false;
 
     private static final String TAG = "MainActivity";
@@ -46,22 +50,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         auth = FirebaseAuth.getInstance();
-
-        presenter = new Presenter(this);
-        groupAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, presenter.getGroups());
         groups = (ListView) findViewById(R.id.peoples);
-        groups.setAdapter(groupAdapter);
-        groups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-             @Override
-             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                 view.setId(i);
-                 displayGroup(view);
-             }
-         });
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             getPermissionToReadContacts();
-        }
+        } else { setup(); }
+    }
+
+    private void setup(){
+        presenter = new Presenter(this);
+        groupAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, presenter.getGroups());
+        groups.setAdapter(groupAdapter);
+        groups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                view.setId(i);
+                displayGroup(view);
+            }
+        });
     }
 
     @Override
@@ -138,9 +144,13 @@ public class MainActivity extends AppCompatActivity {
      *  called by Add Conversation button to bring up addConversationActivity
      *  @param view the button
      */
-    public void addConversation(View view){
-        Intent intent = new Intent(this, AddConversationActivity.class);
-        startActivity(intent);
+    public void FlappyPigeon(View view){
+        Log.d("FlappyPigeon", "making intent");
+        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.helgi.flappybirdgame");
+        if (launchIntent != null) {
+            Log.d("FlappyPigeon", "Flappy Success!");
+            startActivity(launchIntent);//null pointer check in case package name was not found
+        } else { Log.d("FlappyPigeon", "Flappy Failed!"); }
     }
 
     /**
@@ -148,16 +158,20 @@ public class MainActivity extends AppCompatActivity {
      * ASync request with onRequestPermissionResult as callback function
      */
     @TargetApi(Build.VERSION_CODES.M)
-    public void getPermissionToReadContacts() {
+    private void getPermissionToReadContacts() {
         Log.w(TAG, "getting permissions to read contacts in API 23+");
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(android.Manifest.permission.READ_CONTACTS)) {
-                Toast.makeText(this, "Please allow permission!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Need permissions to read contacts in order to" +
+                        " display both groups and contacts", Toast.LENGTH_LONG).show();
             }
             requestPermissions(new String[]{android.Manifest.permission.READ_CONTACTS},
                     READ_CONTACTS_PERMISSIONS_REQUEST);
         }
+    }
+    public void getPermissions(View view){
+        getPermissionToReadContacts();
     }
 
     /**
@@ -168,22 +182,29 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        TextView error = findViewById(R.id.error);
+        Button errorbt = findViewById(R.id.errorbt);
         if (requestCode == READ_CONTACTS_PERMISSIONS_REQUEST) {
             if (grantResults.length == 1 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 /** parent.getContext() **/
                 Toast.makeText(this, "Read Contacts permission granted", Toast.LENGTH_SHORT).show();
-                //refreshSmsInbox();
+                error.setVisibility(View.GONE);
+                errorbt.setVisibility(View.GONE);
+                setup();
             } else {
-                Toast.makeText(this, "Read Contacts permission denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Read Contacts permission denied, Warning! " +
+                        "Most of functionality relies on this permission", Toast.LENGTH_SHORT).show();
+                error.setVisibility(View.VISIBLE);
+                errorbt.setVisibility(View.VISIBLE);
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
     //TODO check if necessary
-    public void updateList(final String smsMessage) {
+    /*public void updateList(final String smsMessage) {
         groupAdapter.insert(smsMessage, 0);
         groupAdapter.notifyDataSetChanged();
-    }
+    }*/
 }

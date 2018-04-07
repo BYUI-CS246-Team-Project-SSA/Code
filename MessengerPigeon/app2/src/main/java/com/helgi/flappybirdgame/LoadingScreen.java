@@ -12,7 +12,7 @@ public class LoadingScreen extends Screen {
         super(game);
     }
 
-    // Þegar kallað er á loading screen er kallað á þessa update aðferð í sífellu uns kallað er á MainMenuScreen
+    // Þegar kallað er á loading screen update MainMenuScreen
     // neðst í fallinu (þ.e. þetta fall keyrist bara einu sinni)
     @Override
     public void update(float deltaTime) {
@@ -52,9 +52,10 @@ public class LoadingScreen extends Screen {
         Assets.getReadyTap		= g.newImage("GameScreen/GetReadyTap.png", ImageFormat.ARGB4444);
         Assets.pauseButton		= g.newImage("GameScreen/PauseButton.png", ImageFormat.RGB565);
         
-        Assets.bird1 			= g.newImage("GameScreen/Bird/Bird1.png", ImageFormat.ARGB4444);
-        Assets.bird2 			= g.newImage("GameScreen/Bird/Bird2.png", ImageFormat.ARGB4444);
-        Assets.bird3 			= g.newImage("GameScreen/Bird/Bird3.png", ImageFormat.ARGB4444);
+        //Assets.bird1 			= g.newImage("GameScreen/Bird/Bird1.png", ImageFormat.ARGB4444);
+        Assets.bird1 			= g.newImage("GameScreen/Bird/Pigeon_down_trans.png", ImageFormat.ARGB4444);
+        Assets.bird2 			= g.newImage("GameScreen/Bird/Pigeon_mid_trans.png", ImageFormat.ARGB4444);
+        Assets.bird3 			= g.newImage("GameScreen/Bird/Pigeon_up_trans.png", ImageFormat.ARGB4444);
         Assets.pipe  			= g.newImage("GameScreen/Pipe.png", ImageFormat.ARGB4444);
         
         ////////////////
