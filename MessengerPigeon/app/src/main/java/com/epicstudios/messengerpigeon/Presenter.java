@@ -217,7 +217,7 @@ public class Presenter {
      * addConversation creates a new sms or mms object to be sent
      * @param people the numbers of the participants
      */
-    public void addConversation(List<Pair<Long, String>> people) {
+    void addConversation(List<Pair<Long, String>> people) {
         List<String> phonNums = new ArrayList<>();
         final int main = ContactsContract.CommonDataKinds.Phone.TYPE_MAIN;
         final int mobile = ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
@@ -237,9 +237,11 @@ public class Presenter {
                 int type = c.getInt(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
                 Log.d(TAG+"numbers", "Type = "+type);
                 phonNums.add(c.getString(c.getColumnIndex(ContactsContract.Data.DATA1)));
+                c.close();
             }
         }
         Log.d(TAG+"numbers", "phonenumbers = "+phonNums.toString());
+        smsManager = SmsManager.getDefault();
         for(String num: phonNums) { send(num); }
     }
 
@@ -317,13 +319,14 @@ public class Presenter {
         }
         return phonenumber;*/
 
-    public void send(String person){
+    private void send(String phonenum){
+        Log.d(TAG, "phonenumber = "+ phonenum);
         String textToSend = " has started a conversation"; //TODO add users name
-        smsManager.sendTextMessage(person, null, textToSend, null, null);
+        smsManager.sendTextMessage(phonenum, null, textToSend, null, null);
         Toast.makeText(context, "Message sent!", Toast.LENGTH_SHORT).show();
     }
 
-    public void send(List<String> people){
+    private void send(List<String> people){
         String textToSend = " has started a conversation"; //TODO add users name
         Uri contentUri;
         String locationUrl;

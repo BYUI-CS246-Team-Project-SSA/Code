@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class ContactAdapter extends BaseAdapter {
     private Activity context;
     private int layout;
     private HashMap<Long, Bitmap> photos;
+    private List<Boolean> checked;
 
     ContactAdapter(Activity context, int layout, List<Pair<Long, String>> objects, HashMap photos) {
         //super(context, layout);//, objects);
@@ -35,6 +37,8 @@ public class ContactAdapter extends BaseAdapter {
         this.layout = layout;
         this.photos = photos;
         Log.d("AdapterContact:", "Created ContactAdapter with photos "+ photos.toString());
+        checked = new ArrayList<>(objects.size());
+        for(int x = 0; x < objects.size(); x++) { checked.add(false); }
     }
 
     @Override
@@ -49,13 +53,14 @@ public class ContactAdapter extends BaseAdapter {
 
     public long getItemId(int position){  return position; }
 
+    public Boolean isChecked(int position){ return checked.get(position); }
     /*
 	 * we are overriding the getView method here - this is what defines how each
 	 * list item will look.
 	 */
     @NonNull
     @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent){
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent){
         Log.d("AdapterContact:", "Called getView with position "+position);
         // assign the view we are converting to a local variable
         View v = convertView;
@@ -86,7 +91,7 @@ public class ContactAdapter extends BaseAdapter {
 
             TextView tt = (TextView) v.findViewById(R.id.name);
             ImageView iv = (ImageView) v.findViewById(R.id.ContactPhoto);
-            CheckBox ckbx = (CheckBox) v.findViewById(R.id.chk_box);
+            final CheckBox ckbx = (CheckBox) v.findViewById(R.id.chk_box);
 
             // check to see if each individual textview is null.
             // if not, assign some text!
@@ -101,6 +106,16 @@ public class ContactAdapter extends BaseAdapter {
                     iv.setImageDrawable(draw);
                 }
             }
+            if (ckbx != null) {
+                ckbx.setChecked(checked.get(position));
+                ckbx.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        checked.set(position, ckbx.isChecked());
+                    }
+                });
+            }
+
         }
         // the view must be returned to our activity
         return v;
