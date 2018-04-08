@@ -56,14 +56,15 @@ public class Bird {
 	  
 	public void up() {
 	    if (Y > gameHeight/20) {
-	      YSpeed = gameHeight/60; // Acceleration upwards
-	      Y -= gameHeight/200;
-	      rotSpeed = 18; 
-	  }
+            YSpeed = gameHeight/100; // 60 Acceleration upwards
+            YSpeed += 0.1;
+            Y -= gameHeight/200;
+            rotSpeed = 18;
+	    }
 	}
 	  
 	public void manageAccAndRot(float deltaTime) {
-		if (YSpeed > -200) YSpeed -= 0.6*deltaTime;// Acceleration downward, YSpeed
+		if (YSpeed > -200) YSpeed -= 0.2*deltaTime;// Acceleration downward, YSpeed
 		Y -= YSpeed;
 		
 		if (rotSpeed > -4) rotSpeed -= 0.24*deltaTime; // The maximum clockwise rotation speed is |-4|

@@ -38,9 +38,9 @@ public class GameScreen extends Screen {
         flappy = new Bird(game, this);
 
         pipes = new PipePair[3];
-        pipes[0] = new PipePair(game, this, 1.0*gameWidth);
-        pipes[1] = new PipePair(game, this, 1.5*gameWidth);
-        pipes[2] = new PipePair(game, this, 2.0*gameWidth);
+        pipes[0] = new PipePair(game, this, 1.3*gameWidth); //1.5
+        pipes[1] = new PipePair(game, this, 2.3*gameWidth); //2.0
+        pipes[2] = new PipePair(game, this, 3.3*gameWidth); //2.5
         pipenum = 0;
 
         FlappyFont.setTextSize(70);
@@ -156,8 +156,6 @@ public class GameScreen extends Screen {
         	if (pipenum != 2) pipenum++;
         	else pipenum = 0;
         }
-        
-
     }
 
     private void updatePaused(List<TouchEvent> touchEvents) {
@@ -258,7 +256,7 @@ public class GameScreen extends Screen {
     	// pipes
     	for (int i = 0; i < 3; i++) {
     		if (Math.abs(flappy.X-pipes[i].X) < 60) {
-    			if (Math.abs(flappy.Y-pipes[i].Y) > 67) { //61
+    			if (Math.abs(flappy.Y-pipes[i].Y) > 70) { //61
         	   		state = GameState.GameOver;
         	   	}
     		}

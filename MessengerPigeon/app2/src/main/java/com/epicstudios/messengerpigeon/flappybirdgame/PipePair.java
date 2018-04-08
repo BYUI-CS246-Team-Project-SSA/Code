@@ -45,7 +45,7 @@ public class PipePair {
     	//g.drawImage(Assets.pipe, matrix, X-(res*145)/2.0, Y-gameHeight/1.29, 0, res, false);
     	//g.drawImage(Assets.pipe, matrix, X-(res*145)/2.0, Y+gameHeight/10.2, 180, res, false);
         g.drawImage(Assets.pipe, matrix, X-(res*145)/2.0, Y-gameHeight/1.25, 0, res, false);
-        g.drawImage(Assets.pipe, matrix, X-(res*145)/2.0, Y+gameHeight/10.2, 180, res, false);
+        g.drawImage(Assets.pipe, matrix, X-(res*145)/2.0, Y+gameHeight/10.4, 180, res, false);
     }
   
     public double getX() { return X; }

@@ -50,9 +50,16 @@ public class LoadingScreen extends Screen {
         Assets.getReadyTap		= g.newImage("GameScreen/GetReadyTap.png", ImageFormat.ARGB4444);
         Assets.pauseButton		= g.newImage("GameScreen/PauseButton.png", ImageFormat.RGB565);
 
+        /*
         Assets.bird1 			= g.newImage("GameScreen/Bird/Pigeon_down_trans.png", ImageFormat.ARGB4444);
         Assets.bird2 			= g.newImage("GameScreen/Bird/Pigeon_mid_trans.png", ImageFormat.ARGB4444);
         Assets.bird3 			= g.newImage("GameScreen/Bird/Pigeon_up_trans.png", ImageFormat.ARGB4444);
+        Assets.pipe  			= g.newImage("GameScreen/Pipe.png", ImageFormat.ARGB4444);
+        */
+        
+        Assets.bird1 			= g.newImage("GameScreen/Bird/pigeonD.png", ImageFormat.ARGB4444);
+        Assets.bird2 			= g.newImage("GameScreen/Bird/pigeonM.png", ImageFormat.ARGB4444);
+        Assets.bird3 			= g.newImage("GameScreen/Bird/pigeonU.png", ImageFormat.ARGB4444);
         Assets.pipe  			= g.newImage("GameScreen/Pipe.png", ImageFormat.ARGB4444);
         
         ////////////////
