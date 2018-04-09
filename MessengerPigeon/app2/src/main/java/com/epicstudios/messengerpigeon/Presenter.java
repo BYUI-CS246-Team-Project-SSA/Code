@@ -218,6 +218,7 @@ public class Presenter {
      */
     void addConversation(List<Pair<Long, String>> people, String message) {
         List<String> phonNums = new ArrayList<>();
+        final int home = ContactsContract.CommonDataKinds.Phone.TYPE_HOME;
         final int main = ContactsContract.CommonDataKinds.Phone.TYPE_MAIN;
         final int mobile = ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE;
         final int other = ContactsContract.CommonDataKinds.Phone.TYPE_OTHER;
@@ -233,10 +234,24 @@ public class Presenter {
                     new String[]{String.valueOf(person.first)}, null);
 
             if(c != null) {
-                c.moveToFirst();
-                int type = c.getInt(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
-                Log.d(TAG+"numbers", "Type = "+type);
-                phonNums.add(c.getString(c.getColumnIndex(ContactsContract.Data.DATA1)));
+                final int TYPE = c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
+                String Number = "";
+                while(c.moveToNext()){
+                    int type = c.getInt(TYPE);
+                    Log.d(TAG+"numbers", "Type = "+type);
+                    if(type == home) {
+                        Number = c.getString(c.getColumnIndex(ContactsContract.Data.DATA1));
+                    }
+                    if (type == mobile){
+                        Number = c.getString(c.getColumnIndex(ContactsContract.Data.DATA1));
+                        break;
+                    }
+                }
+                if(Number.equals("")){
+                    c.moveToFirst();
+                    Number = c.getString(c.getColumnIndex(ContactsContract.Data.DATA1));
+                }
+                phonNums.add(Number);
                 c.close();
             }
         }

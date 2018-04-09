@@ -2,7 +2,9 @@ package com.epicstudios.messengerpigeon;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     public static boolean active = false;
 
     private static final String TAG = "MainActivity";
+    private SharedPreferences prefs;
+    private final String PREF_FILE = "com.epicstudios.messengerpigeon.LOGIN_PREF";
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
 
     @Override
@@ -42,7 +46,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser == null) {
+            //LogOutUser();
+        }
+
         groups = (ListView) findViewById(R.id.peoples);
+        prefs = this.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             getPermissionToReadContacts();
@@ -62,19 +72,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        active = true;
-
-        FirebaseUser currentUser = auth.getCurrentUser();
-
-        if (currentUser == null) {
-            LogOutUser();
-        }
-    }
-
     private void LogOutUser() {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.apply();
         Intent mainIntent = new Intent(
                 MainActivity.this, LoginActivity.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -99,18 +100,17 @@ public class MainActivity extends AppCompatActivity {
             LogOutUser();
         }
 
+        if (item.getItemId() == R.id.login_button)
+        {
+            LogOutUser();
+        }
+
         if (item.getItemId() == R.id.acc_set_button)
         {
             Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(settingsIntent);
         }
         return true;
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        active = false;
     }
 
     /**

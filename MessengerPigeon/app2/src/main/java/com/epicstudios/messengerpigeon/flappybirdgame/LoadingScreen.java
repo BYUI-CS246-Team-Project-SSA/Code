@@ -57,10 +57,10 @@ public class LoadingScreen extends Screen {
         Assets.pipe  			= g.newImage("GameScreen/Pipe.png", ImageFormat.ARGB4444);
         */
 
-        Assets.bird1 			= g.newImage("GameScreen/Bird/pigeon_down.png", ImageFormat.ARGB4444);
-        Assets.bird2 			= g.newImage("GameScreen/Bird/pigeon_mid.png", ImageFormat.ARGB4444);
-        Assets.bird3 			= g.newImage("GameScreen/Bird/pigeon_up.png", ImageFormat.ARGB4444);
-        Assets.pipe  			= g.newImage("GameScreen/Pipe.png", ImageFormat.ARGB4444);
+        Assets.bird1 			= g.newImage("GameScreen/Bird/Pigeon_down_trans.png", ImageFormat.ARGB4444);
+        Assets.bird2 			= g.newImage("GameScreen/Bird/Pigeon_mid_trans.png", ImageFormat.ARGB4444);
+        Assets.bird3 			= g.newImage("GameScreen/Bird/Pigeon_up_trans.png", ImageFormat.ARGB4444);
+        Assets.pipe  			= g.newImage("GameScreen/Building.png", ImageFormat.ARGB4444);
         
         ////////////////
         // PausedScreen
